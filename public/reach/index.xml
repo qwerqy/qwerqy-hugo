@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Reach on Amin Roslan</title>
-    <link>http://localhost:1313/reach/</link>
+    <link>https://aminroslan.dev/reach/</link>
     <description>Recent content in Reach on Amin Roslan</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:1313/reach/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://aminroslan.dev/reach/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

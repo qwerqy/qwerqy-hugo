@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Talks on Amin Roslan</title>
-    <link>http://localhost:1313/talks/</link>
+    <link>https://aminroslan.dev/talks/</link>
     <description>Recent content in Talks on Amin Roslan</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 17 Oct 2019 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/talks/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://aminroslan.dev/talks/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Porting my Discord bot project into AWS Ecosystem</title>
-      <link>http://localhost:1313/talks/porting-my-discord-bot-into-aws-ecosystem/</link>
+      <link>https://aminroslan.dev/talks/porting-my-discord-bot-into-aws-ecosystem/</link>
       <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/talks/porting-my-discord-bot-into-aws-ecosystem/</guid>
+      <guid>https://aminroslan.dev/talks/porting-my-discord-bot-into-aws-ecosystem/</guid>
       <description></description>
     </item>
     <item>
       <title>Why You Should Learn To Code?</title>
-      <link>http://localhost:1313/talks/why-you-should-learn-to-code/</link>
+      <link>https://aminroslan.dev/talks/why-you-should-learn-to-code/</link>
       <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/talks/why-you-should-learn-to-code/</guid>
+      <guid>https://aminroslan.dev/talks/why-you-should-learn-to-code/</guid>
       <description></description>
     </item>
     <item>
       <title>Implementing Server Side Rendering logic to a CRA production app</title>
-      <link>http://localhost:1313/talks/implementing-ssr-to-cra-app/</link>
+      <link>https://aminroslan.dev/talks/implementing-ssr-to-cra-app/</link>
       <pubDate>Wed, 27 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/talks/implementing-ssr-to-cra-app/</guid>
+      <guid>https://aminroslan.dev/talks/implementing-ssr-to-cra-app/</guid>
       <description></description>
     </item>
   </channel>

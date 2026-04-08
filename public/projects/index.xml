@@ -2,101 +2,101 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects on Amin Roslan</title>
-    <link>http://localhost:1313/projects/</link>
+    <link>https://aminroslan.dev/projects/</link>
     <description>Recent content in Projects on Amin Roslan</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 20 Feb 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://aminroslan.dev/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>I Need A Job AI</title>
-      <link>http://localhost:1313/projects/ineedajob/</link>
+      <link>https://aminroslan.dev/projects/ineedajob/</link>
       <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/ineedajob/</guid>
+      <guid>https://aminroslan.dev/projects/ineedajob/</guid>
       <description></description>
     </item>
     <item>
       <title>ReserveKit</title>
-      <link>http://localhost:1313/projects/reservekit/</link>
+      <link>https://aminroslan.dev/projects/reservekit/</link>
       <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/reservekit/</guid>
+      <guid>https://aminroslan.dev/projects/reservekit/</guid>
       <description></description>
     </item>
     <item>
       <title>DSA Visualizer</title>
-      <link>http://localhost:1313/projects/dsa-visualizer/</link>
+      <link>https://aminroslan.dev/projects/dsa-visualizer/</link>
       <pubDate>Tue, 31 Dec 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/dsa-visualizer/</guid>
+      <guid>https://aminroslan.dev/projects/dsa-visualizer/</guid>
       <description></description>
     </item>
     <item>
       <title>ImagineKraft</title>
-      <link>http://localhost:1313/projects/imaginekraft/</link>
+      <link>https://aminroslan.dev/projects/imaginekraft/</link>
       <pubDate>Sat, 20 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/imaginekraft/</guid>
+      <guid>https://aminroslan.dev/projects/imaginekraft/</guid>
       <description></description>
     </item>
     <item>
       <title>Import Scanner 🕵️‍♀️</title>
-      <link>http://localhost:1313/projects/import-scanner/</link>
+      <link>https://aminroslan.dev/projects/import-scanner/</link>
       <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/import-scanner/</guid>
+      <guid>https://aminroslan.dev/projects/import-scanner/</guid>
       <description></description>
     </item>
     <item>
       <title>Cafeist</title>
-      <link>http://localhost:1313/projects/cafeist/</link>
+      <link>https://aminroslan.dev/projects/cafeist/</link>
       <pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/cafeist/</guid>
+      <guid>https://aminroslan.dev/projects/cafeist/</guid>
       <description></description>
     </item>
     <item>
       <title>Qwerqy/UI</title>
-      <link>http://localhost:1313/projects/qwerqy-ui/</link>
+      <link>https://aminroslan.dev/projects/qwerqy-ui/</link>
       <pubDate>Sat, 08 Jul 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/qwerqy-ui/</guid>
+      <guid>https://aminroslan.dev/projects/qwerqy-ui/</guid>
       <description></description>
     </item>
     <item>
       <title>YNAB Recap Report Tool</title>
-      <link>http://localhost:1313/projects/yrrt/</link>
+      <link>https://aminroslan.dev/projects/yrrt/</link>
       <pubDate>Sat, 17 Jun 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/yrrt/</guid>
+      <guid>https://aminroslan.dev/projects/yrrt/</guid>
       <description>&lt;p&gt;A tool to generate recap reports based on YNAB transactions csv. The following reports will be generated:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;All transactions table&#xA;Total outflow per categories&#xA;Total outflow per flags&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;This tool will work perfectly when you set a flag for each of your spending transactions. This tool does not process inflow, only outflow (expenses, spending, etc)&lt;/p&gt;&#xA;&lt;p&gt;Personally I have been using YNAB since 2018. I have always find zero-based budgeting to be awesome and fits my budgeting style. However, I still need a way to&lt;/p&gt;</description>
     </item>
     <item>
       <title>Flawer Co</title>
-      <link>http://localhost:1313/projects/flawer-co/</link>
+      <link>https://aminroslan.dev/projects/flawer-co/</link>
       <pubDate>Thu, 11 Feb 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/flawer-co/</guid>
+      <guid>https://aminroslan.dev/projects/flawer-co/</guid>
       <description></description>
     </item>
     <item>
       <title>Raffle System</title>
-      <link>http://localhost:1313/projects/raffle-system/</link>
+      <link>https://aminroslan.dev/projects/raffle-system/</link>
       <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/raffle-system/</guid>
+      <guid>https://aminroslan.dev/projects/raffle-system/</guid>
       <description>&lt;p&gt;b&lt;/p&gt;</description>
     </item>
     <item>
       <title>Kountr</title>
-      <link>http://localhost:1313/projects/kountr/</link>
+      <link>https://aminroslan.dev/projects/kountr/</link>
       <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/kountr/</guid>
+      <guid>https://aminroslan.dev/projects/kountr/</guid>
       <description>&lt;p&gt;Whether it is a game with your circle of friends, or a company monthly presentation, you can use Kountr to keep count!&lt;/p&gt;&#xA;&lt;p&gt;Kountr is a counter app that is made easy to use for everyone. Even if you are as young as a baby, or old as a cassette, you can use it!&lt;/p&gt;&#xA;&lt;p&gt;In Kountr, you can start as either a Host, or a Participant. As a Host, you set the name of the counter, and then you can start. As simple as that! You can start inviting your friends to join the session by passing them the shareable link that is available on the dashboard once you start the counter. You have the option to reset the counter, or if you want to kill the mood, end it.As a Participant, you will need a session link from a Host, once you have it, you can go into the session. As. Simple. As. THAT!!&lt;/p&gt;</description>
     </item>
     <item>
       <title>Porter&#39;s Pantry</title>
-      <link>http://localhost:1313/projects/porters-pantry/</link>
+      <link>https://aminroslan.dev/projects/porters-pantry/</link>
       <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/porters-pantry/</guid>
+      <guid>https://aminroslan.dev/projects/porters-pantry/</guid>
       <description></description>
     </item>
     <item>
       <title>Discord OpenID Connect Wrapper for Cognito</title>
-      <link>http://localhost:1313/projects/discord-openid-connect-wrapper-for-cognito/</link>
+      <link>https://aminroslan.dev/projects/discord-openid-connect-wrapper-for-cognito/</link>
       <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/discord-openid-connect-wrapper-for-cognito/</guid>
+      <guid>https://aminroslan.dev/projects/discord-openid-connect-wrapper-for-cognito/</guid>
       <description></description>
     </item>
   </channel>

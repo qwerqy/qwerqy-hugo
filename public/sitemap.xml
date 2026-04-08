@@ -2,266 +2,266 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://aminroslan.dev/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/defer-vs-eof-go/</loc>
+    <loc>https://aminroslan.dev/til/defer-vs-eof-go/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/go/</loc>
+    <loc>https://aminroslan.dev/tags/go/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/how-ssr-works/</loc>
+    <loc>https://aminroslan.dev/til/how-ssr-works/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/ineedajob/</loc>
+    <loc>https://aminroslan.dev/projects/ineedajob/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/javascript/</loc>
+    <loc>https://aminroslan.dev/tags/javascript/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/javascript-asynchronous-precendence/</loc>
+    <loc>https://aminroslan.dev/til/javascript-asynchronous-precendence/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/</loc>
+    <loc>https://aminroslan.dev/projects/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/react/</loc>
+    <loc>https://aminroslan.dev/tags/react/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://aminroslan.dev/tags/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/</loc>
+    <loc>https://aminroslan.dev/til/</loc>
     <lastmod>2025-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/</loc>
+    <loc>https://aminroslan.dev/blog/</loc>
     <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/reservekit/</loc>
+    <loc>https://aminroslan.dev/projects/reservekit/</loc>
     <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/bts-reservekit-development/</loc>
+    <loc>https://aminroslan.dev/blog/bts-reservekit-development/</loc>
     <lastmod>2025-02-05T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/encode-google-service-account-base64/</loc>
+    <loc>https://aminroslan.dev/til/encode-google-service-account-base64/</loc>
     <lastmod>2025-01-08T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/env/</loc>
+    <loc>https://aminroslan.dev/tags/env/</loc>
     <lastmod>2025-01-08T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/dsa-visualizer/</loc>
+    <loc>https://aminroslan.dev/projects/dsa-visualizer/</loc>
     <lastmod>2024-12-31T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/typescript/</loc>
+    <loc>https://aminroslan.dev/tags/typescript/</loc>
     <lastmod>2024-12-07T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/usememo-and-usecallback-skips-rerender/</loc>
+    <loc>https://aminroslan.dev/til/usememo-and-usecallback-skips-rerender/</loc>
     <lastmod>2024-12-07T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</loc>
+    <loc>https://aminroslan.dev/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</loc>
     <lastmod>2024-11-14T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/tags/git/</loc>
+    <loc>https://aminroslan.dev/tags/git/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/til/what-happens-when-rebase/</loc>
+    <loc>https://aminroslan.dev/til/what-happens-when-rebase/</loc>
     <lastmod>2024-10-22T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/imaginekraft/</loc>
+    <loc>https://aminroslan.dev/projects/imaginekraft/</loc>
     <lastmod>2024-07-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/import-scanner/</loc>
+    <loc>https://aminroslan.dev/projects/import-scanner/</loc>
     <lastmod>2023-08-26T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</loc>
+    <loc>https://aminroslan.dev/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</loc>
     <lastmod>2023-08-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/building-a-webapp-for-cafes/</loc>
+    <loc>https://aminroslan.dev/blog/building-a-webapp-for-cafes/</loc>
     <lastmod>2023-08-12T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/cafeist/</loc>
+    <loc>https://aminroslan.dev/projects/cafeist/</loc>
     <lastmod>2023-07-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/5-tools-i-use-as-a-remote-software-engineer/</loc>
+    <loc>https://aminroslan.dev/blog/5-tools-i-use-as-a-remote-software-engineer/</loc>
     <lastmod>2023-07-13T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/qwerqy-ui/</loc>
+    <loc>https://aminroslan.dev/projects/qwerqy-ui/</loc>
     <lastmod>2023-07-08T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</loc>
+    <loc>https://aminroslan.dev/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</loc>
     <lastmod>2023-06-29T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/streamlining-version-control-for-efficient-collaboration/</loc>
+    <loc>https://aminroslan.dev/blog/streamlining-version-control-for-efficient-collaboration/</loc>
     <lastmod>2023-06-22T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/yrrt/</loc>
+    <loc>https://aminroslan.dev/projects/yrrt/</loc>
     <lastmod>2023-06-17T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/</loc>
+    <loc>https://aminroslan.dev/blog/exploring-polymorphic-components-in-react-with-typescript/</loc>
     <lastmod>2023-06-15T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/</loc>
+    <loc>https://aminroslan.dev/blog/blueprint-for-building-layouts-with-grid-system/</loc>
     <lastmod>2023-06-08T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/full-blown-frontend-engineer/</loc>
+    <loc>https://aminroslan.dev/blog/full-blown-frontend-engineer/</loc>
     <lastmod>2023-06-01T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/flawer-co/</loc>
+    <loc>https://aminroslan.dev/projects/flawer-co/</loc>
     <lastmod>2021-02-11T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/raffle-system/</loc>
+    <loc>https://aminroslan.dev/projects/raffle-system/</loc>
     <lastmod>2021-01-11T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/kountr/</loc>
+    <loc>https://aminroslan.dev/projects/kountr/</loc>
     <lastmod>2021-01-06T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/porters-pantry/</loc>
+    <loc>https://aminroslan.dev/projects/porters-pantry/</loc>
     <lastmod>2020-09-11T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/projects/discord-openid-connect-wrapper-for-cognito/</loc>
+    <loc>https://aminroslan.dev/projects/discord-openid-connect-wrapper-for-cognito/</loc>
     <lastmod>2019-10-25T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/talks/porting-my-discord-bot-into-aws-ecosystem/</loc>
+    <loc>https://aminroslan.dev/talks/porting-my-discord-bot-into-aws-ecosystem/</loc>
     <lastmod>2019-10-17T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/talks/</loc>
+    <loc>https://aminroslan.dev/talks/</loc>
     <lastmod>2019-10-17T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/talks/why-you-should-learn-to-code/</loc>
+    <loc>https://aminroslan.dev/talks/why-you-should-learn-to-code/</loc>
     <lastmod>2019-09-19T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/server-to-server-communication-using-socket-io-for-battlev/</loc>
+    <loc>https://aminroslan.dev/blog/server-to-server-communication-using-socket-io-for-battlev/</loc>
     <lastmod>2019-04-19T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</loc>
+    <loc>https://aminroslan.dev/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</loc>
     <lastmod>2019-04-04T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/refining-the-battlev-project/</loc>
+    <loc>https://aminroslan.dev/blog/refining-the-battlev-project/</loc>
     <lastmod>2019-03-24T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/are-you-a-builder-or-a-developer/</loc>
+    <loc>https://aminroslan.dev/blog/are-you-a-builder-or-a-developer/</loc>
     <lastmod>2019-03-02T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/talks/implementing-ssr-to-cra-app/</loc>
+    <loc>https://aminroslan.dev/talks/implementing-ssr-to-cra-app/</loc>
     <lastmod>2019-02-27T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</loc>
+    <loc>https://aminroslan.dev/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</loc>
     <lastmod>2019-02-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</loc>
+    <loc>https://aminroslan.dev/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</loc>
     <lastmod>2019-02-16T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</loc>
+    <loc>https://aminroslan.dev/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</loc>
     <lastmod>2019-02-04T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/reach/</loc>
+    <loc>https://aminroslan.dev/reach/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/work/</loc>
+    <loc>https://aminroslan.dev/work/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
