@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Building a Web App for Cafes | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Café discovery app, Coffee shop locator, Best cafes in Klang Valley, Café exploration platform, Personalized café lists" />
+
+
+<meta property="og:title" content="Building a Web App for Cafes" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/building-a-webapp-for-cafes/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building a Web App for Cafes" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/building-a-webapp-for-cafes/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Building a Web App for Cafes</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / August 12, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">4 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <Callout emoji="💡">
+  This article was enhanced by ChatGPT so pardon the bombastic sentences.
+</Callout>
+<h2 id="a-brief-backstory-of-my-café-adventures">A Brief Backstory of My Café Adventures</h2>
+<p>Coffee has always been a source of delight for me. Its aromatic allure and the satisfaction of finding the perfect cup with a delightful taste have always enchanted me.</p>
+<p>Earlier this year, my beloved café, which I frequented often, temporarily closed its doors for renovations. This event prompted my partner and me to embark on a café-hunting expedition within our locality.</p>
+<p>Our quest began with a Google search: &ldquo;Best Cafes in Kuala Lumpur.&rdquo; The results unveiled a plethora of articles showcasing the finest cafes in the city for 2023. I even consulted Google Maps to identify the nearest cafes boasting the highest customer reviews. As I documented all these findings in my Notes app, I steadily compiled a list of promising destinations to explore. This ritual continued month after month, gradually wearing me down due to the effort required to curate this growing list.</p>
+<p>Jumping forward to just a month ago, my partner and I ventured to Phuket for a combined work and vacation retreat, spanning a week. On the third day of our stay, we decided to wander into the charming Old Town, especially drawn by the renowned night market that graced the town every Sunday. During our journey to the market, I couldn&rsquo;t help but be captivated by the sheer abundance of cafes lining the streets. This experience prompted me to contemplate the implausible task of exploring even a fraction of these enticing cafes if I were to relocate to Phuket.</p>
+<p>Following our night market escapade, my mind continued to dwell on the concept of these cafes. The notion of having all these cafes neatly cataloged in one place, with the freedom to pick and choose my destinations for each month, captured my imagination. This marked the birth of <a href="http://cafeist.io/">cafeist.io</a>.</p>
+<h2 id="the-genesis-of-cafeistio">The Genesis of <a href="http://cafeist.io/">cafeist.io</a></h2>
+<p>The inception of <a href="http://cafeist.io/">cafeist.io</a> dates back to the fourth day of our Phuket sojourn. Today, I am proud to announce that this endeavor has successfully achieved its initial milestone.</p>
+<p>This innovation tackles three fundamental challenges:</p>
+<ul>
+<li>Streamlining the café search process, eliminating unnecessary clutter.</li>
+<li>Crafting personalized lists of preferred cafes.</li>
+<li>Maintaining an organized repository of all the cafes I&rsquo;ve explored.</li>
+</ul>
+<p>These solutions elegantly address the frustrations I&rsquo;ve experienced on a monthly basis.</p>
+<h2 id="building-the-foundation">Building the Foundation</h2>
+<p>As I chronicle this journey in my blog, I find it fitting to detail the technological underpinnings of the initial web app build:</p>
+<p>On the frontend, I employed:</p>
+<ul>
+<li><a href="https://nextjs.org/">NextJS 13.4</a> (utilizing App Router capabilities)</li>
+<li><a href="https://tailwindcss.com/">TailwindCSS</a> for crafting stylish designs</li>
+<li><a href="https://ui.shadcn.com/">Shadcn UI</a> for assembling user interface components</li>
+<li><a href="https://lucide.dev/">Lucide</a> for a captivating array of icons</li>
+<li><a href="http://playwright.dev/">Playwright</a> for rigorous end-to-end testing</li>
+<li><a href="https://jestjs.io/">Jest</a> for meticulous unit testing</li>
+</ul>
+<p>Conversely, the backend is a testament to simplicity:</p>
+<ul>
+<li><a href="https://deno.land">Deno</a> for server-side scripting</li>
+</ul>
+<p>Indeed, there&rsquo;s no conventional backend in play. I&rsquo;ve harnessed the power of <a href="https://supabase.com/">Supabase</a> to serve as both the backend and database.</p>
+<p>Lastly, the culmination of these efforts resides on the <a href="https://vercel.com">Vercel</a> platform.</p>
+<p>The rationale behind my selection of NextJS and TailwindCSS is straightforward: proficiency and mastery. These technologies resonate with me, aligning seamlessly with my skill set. The remaining components on the list might be unfamiliar to me, but I welcome the opportunity to expand my expertise.</p>
+<h2 id="parting-thoughts">Parting Thoughts</h2>
+<p>Until now, I&rsquo;ve never embraced a side project with such earnest dedication. The inspirations drawn from Product Hunt and Indie Hackers have ignited a newfound passion within me. The examples set by individuals like @levelsio on X (formerly known as Twitter) fuel my conviction that if they can create something significant, so can I. After a three-week hiatus, I am committed to resuming regular postings, as I have several more ideas in the pipeline. These concepts, much like <a href="http://cafeist.io/">cafeist.io</a>, derive from my desire to address everyday challenges.</p>
+<p>In conclusion, I invite those interested in real-time updates to follow my microblogging journey on X. Your support means the world as I embark on this exciting endeavor. Let&rsquo;s dive in without hesitation.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fbuilding-a-webapp-for-cafes%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

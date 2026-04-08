@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>How I reduced a search function query’s execution time by 85% | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="postgres, sql, query, database, execution time, performance" />
+
+
+<meta property="og:title" content="How I reduced a search function query’s execution time by 85%" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How I reduced a search function query’s execution time by 85%" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">How I reduced a search function query’s execution time by 85%</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / August 24, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">16 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p>Let&rsquo;s make something clear, <em>I am not a database expert</em>. Though I work with different databases in the past,
+I would most likely use an ORM but I would never see myself doing SQL queries, until recently.</p>
+<p>So I have been doing alot of SQL queries lately for my Postgres DB on Supabase.
+If you have read my <a href="https://qwerqy.com/blog/building-a-webapp-for-cafes">previous blogpost</a>,
+you know that I use <a href="https://supabase.com">Supabase</a> as the backend for <a href="https://cafeist.io">Cafeist</a>. Supabase&rsquo;s
+Javascript API client is really helpful. It makes it easy to make queries to the API.
+However, once I started to become more ambitious with the features that I implemented,
+I realised there were limitations with the existing Javascript client. With that said, I decided
+to go <em>raw</em>.</p>
+<Callout emoji="💡">
+  Hi there! This post is pretty long, I know. I never been good in writing essays but
+  I wanted to write about this because I consider it to be one of the highlights in my
+  profession as a software engineer. After this callout, I will be talking about how I developed
+  the geolocation feature of Cafeist. Here are some quicklinks for you to jump around if you wanna
+  skip.
+<p><a href="#performance-concerns">Skip to function query optimisation</a></p>
+<p><a href="#performance-on-the-web">Skip to results</a></p>
+  </Callout>
+<h2 id="search-started-to-become-more-complex">Search started to become more complex</h2>
+<p>One of the key features of Cafeist is it&rsquo;s <strong>search engine</strong>. Initially, using the Javascript
+client was enough to query results on the homepage.</p>
+<p>Things started to get complicated when I wanted the search results to be filtered
+with 8 different categories. This is achievable just with the Javascript client.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#75715e">// ..other code
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">supabase</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createServerComponentClient</span>&lt;<span style="color:#f92672">Database</span>&gt;({ <span style="color:#a6e22e">cookies</span> })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedQuery</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">query</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedSort</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">sort</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedLocale</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">locales</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedCategories</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">categories</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedAtmospheres</span> <span style="color:#f92672">=</span> decodeURIComponent(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">atmospheres</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedAccessibilities</span> <span style="color:#f92672">=</span> decodeURIComponent(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">accessibilities</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedAmenities</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">amenities</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedOfferings</span> <span style="color:#f92672">=</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">offerings</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedServiceOptions</span> <span style="color:#f92672">=</span> decodeURIComponent(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">serviceOptions</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedPaymentMethods</span> <span style="color:#f92672">=</span> decodeURIComponent(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">filters</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">paymentMethods</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sort</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">key</span>: <span style="color:#66d9ef">string</span>; <span style="color:#a6e22e">ascending</span>: <span style="color:#66d9ef">boolean</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">sanitisedSort</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">?</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">key</span>: <span style="color:#66d9ef">sanitisedSort.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">0</span>],
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">ascending</span>: <span style="color:#66d9ef">sanitisedSort.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">1</span>].<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;:&#34;</span>)[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;true&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">key</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;created_at&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">ascending</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">supabaseQuery</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">supabase</span>
+</span></span><span style="display:flex;"><span>  .<span style="color:#66d9ef">from</span>(<span style="color:#e6db74">&#34;cafes&#34;</span>)
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">select</span>(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">select</span>, { <span style="color:#a6e22e">count</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;exact&#34;</span>, <span style="color:#a6e22e">head</span>: <span style="color:#66d9ef">false</span> })
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">order</span>(<span style="color:#a6e22e">sort</span>.<span style="color:#a6e22e">key</span>, { <span style="color:#a6e22e">ascending</span>: <span style="color:#66d9ef">sort.ascending</span> })
+</span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">PAGE_COUNT</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">query</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">textSearch</span>(<span style="color:#e6db74">&#34;fts&#34;</span>, <span style="color:#a6e22e">sanitisedQuery</span>, {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;websearch&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">config</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;english&#34;</span>
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedLocale</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(<span style="color:#e6db74">&#34;cafe_addresses.locale&#34;</span>, <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedLocale</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedCategories</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;cafe_categories.category_name&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedCategories</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedAtmospheres</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;cafe_atmospheres.atmosphere_name&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedAtmospheres</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedAccessibilities</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;cafe_accessibilities.accessibility_name&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedAccessibilities</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedAmenities</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(<span style="color:#e6db74">&#34;cafe_amenities.amenity_name&#34;</span>, <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedAmenities</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedOfferings</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(<span style="color:#e6db74">&#34;cafe_offerings.offering_name&#34;</span>, <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedOfferings</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedServiceOptions</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;cafe_service_options.option_name&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedServiceOptions</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">sanitisedPaymentMethods</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">supabaseQuery</span>.<span style="color:#a6e22e">ilike</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;cafe_payment_methods.payment_method&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">`%</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">sanitisedPaymentMethods</span><span style="color:#e6db74">}</span><span style="color:#e6db74">%`</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">cafes</span>, <span style="color:#a6e22e">count</span>, <span style="color:#a6e22e">error</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">supabaseQuery</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">error</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">error</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">throw</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">error</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// return code..
+</span></span></span></code></pre></div><p>It got the job done eventhough there are 148 lines of code. This would the beginning
+of my endless suffering for the next couple of days, so bear with me.</p>
+<h2 id="inception-of-the-location-feature">Inception of the location feature</h2>
+<p>On <strong>16th of August 2023</strong>, I stayed up until 7am implementing geolocation to Cafeist.
+I got geolocation to work with the results since each of the cafe data that are
+in the database have <code>lat</code> and <code>lng</code> columns but here&rsquo;s where it gets really interesting.</p>
+<p>I am inspired by how <a href="https://airbnb.com">Airbnb</a> does it &ndash; each stay has a distance badge that shows
+how far you are with that place. At first I did it by using an NPM library called <code>geolib</code>
+and calculate the distance between the user&rsquo;s location and the cafe&rsquo;s location based on
+latitude and longitude.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">distance</span> <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">lat</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">lng</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">?</span> <span style="color:#a6e22e">getDistance</span>(
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">latitude</span>: <span style="color:#66d9ef">userLocation.lat</span>, <span style="color:#a6e22e">longitude</span>: <span style="color:#66d9ef">userLocation.lng</span> },
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">latitude</span>: <span style="color:#66d9ef">lat</span>, <span style="color:#a6e22e">longitude</span>: <span style="color:#66d9ef">lng</span> }
+</span></span><span style="display:flex;"><span>      )
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">:</span> <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p>This returns the distance in meters. I achieved what&rsquo;s needed, but <strong>at the cost
+of running this function per each item within the results</strong>. There are 15 items per
+result, not including the next set of 15 items when user scrolls lower on the home
+page. Moreover, it&rsquo;s <strong>clientside</strong>, so seeing a placeholder load on each item isn&rsquo;t really
+that nice to see.</p>
+<p>I wanted this to be rendered on the server. When the results load in, the distance will
+also be viewable, <em>but how?</em></p>
+<h3 id="using-cookies-to-store-geolocation">Using cookies to store geolocation</h3>
+<p>Before I can even think about how I should make it render on the server, I should first think
+about how can I send the geolocation data to the server? The answer was by using <strong>cookies</strong>.</p>
+<Callout emoji="💡">
+  Checkout NextJS' documentation about their [cookies
+  API](https://nextjs.org/docs/app/api-reference/functions/cookies). I will be
+  referring to this alot.
+</Callout>
+<p>Placing the latitude and longitude as cookies was the perfect way to send it to the server so
+I created some <strong>Server Actions</strong> since they are functions that will run on the server even if it&rsquo;s
+called on a client component.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#e6db74">&#34;use server&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getLocationCookie() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cookieStore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cookies</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lat</span>: <span style="color:#66d9ef">Number</span>(<span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lat&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lng</span>: <span style="color:#66d9ef">Number</span>(<span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lng&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">refreshLocationCookie</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">lat</span>: <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">lng</span>: <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cookieStore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cookies</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// If no location, return
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">lat</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">lng</span>) <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">0</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Get location from cookies
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">existingLat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lat&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">existingLng</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lng&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">existingLat</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">existingLng</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If no location in cookies, set location
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">setLocationCookie</span>(<span style="color:#a6e22e">lat</span>, <span style="color:#a6e22e">lng</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">1</span> }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// If location is different from existing location, set new location
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (Number(<span style="color:#a6e22e">existingLat</span>) <span style="color:#f92672">!==</span> <span style="color:#a6e22e">lat</span> <span style="color:#f92672">&amp;&amp;</span> Number(<span style="color:#a6e22e">existingLng</span>) <span style="color:#f92672">!==</span> <span style="color:#a6e22e">lng</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;user-lat&#34;</span>, <span style="color:#a6e22e">lat</span>.<span style="color:#a6e22e">toString</span>())
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;user-lng&#34;</span>, <span style="color:#a6e22e">lng</span>.<span style="color:#a6e22e">toString</span>())
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">2</span> }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">setLocationCookie</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">lat</span>: <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">lng</span>: <span style="color:#66d9ef">number</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">cookieStore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">cookies</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">lat</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">lng</span>) <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Set the cookie
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;user-lat&#34;</span>, <span style="color:#a6e22e">lat</span><span style="color:#f92672">!</span>.<span style="color:#a6e22e">toString</span>())
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">cookieStore</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;user-lng&#34;</span>, <span style="color:#a6e22e">lng</span><span style="color:#f92672">!</span>.<span style="color:#a6e22e">toString</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><Callout emoji="💡">
+  Learn more about [Server
+  Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions).
+</Callout>
+<p>These server actions are utilised in a custom hook and is invoked when the user is on the home page. This makes it
+possible to</p>
+<ul>
+<li>Set the geolocation of the browser to cookies when there is none set.</li>
+<li>Update the geolocation when there is a difference between the existing geolocation data
+and the new geolocation data.</li>
+</ul>
+<p>But what about getting the geolocation data, should I call <code>getLocationCookie()</code> when I need it?
+Yes but <strong>don&rsquo;t</strong>. Doing so will disable ISR and switch the whole route to
+<a href="https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-rendering">render dynamically</a>.
+This is because <code>cookies()</code> is considered a <a href="https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic#dynamic-functions">dynamic function</a></p>
+<Callout emoji="💡">
+  `cookies()` is a Dynamic Function whose returned values cannot be known ahead
+  of time. Using it in a layout or page will opt a route into dynamic rendering
+  at request time.
+</Callout>
+<h3 id="using-middleware-to-send-geolocation-data">Using middleware to send geolocation data</h3>
+<p>I wanted to find a way on how I can get cookies and send it to any server
+components, <em>without touching any server components</em> 🤣.</p>
+<p>Then I remembered, NextJS has quite a powerful <a href="https://nextjs.org/docs/app/building-your-application/routing/middleware">middleware API</a>.
+It can get cookies from incoming request headers. To send it over to the server component,
+I place the data onto the <strong>search params</strong> to the next URL.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">middleware</span>(<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">NextRequest</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">userLat</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">cookies</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lat&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">userLng</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">cookies</span>.<span style="color:#66d9ef">get</span>(<span style="color:#e6db74">&#34;user-lng&#34;</span>)<span style="color:#f92672">?</span>.<span style="color:#a6e22e">value</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">res</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">next</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">supabase</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createMiddlewareClient</span>&lt;<span style="color:#f92672">Database</span>&gt;({ <span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span> })
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">supabase</span>.<span style="color:#a6e22e">auth</span>.<span style="color:#a6e22e">getSession</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">userLat</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">userLng</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">res</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">nextUrl</span>.<span style="color:#a6e22e">pathname</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;/&#34;</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">nextUrl</span>.<span style="color:#a6e22e">searchParams</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;lt&#34;</span>, <span style="color:#a6e22e">userLat</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">nextUrl</span>.<span style="color:#a6e22e">searchParams</span>.<span style="color:#66d9ef">set</span>(<span style="color:#e6db74">&#34;lg&#34;</span>, <span style="color:#a6e22e">userLng</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">rewrite</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">nextUrl</span>.<span style="color:#a6e22e">toString</span>())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>All I need to do now is get the geolocation data from the search params, and
+then I can finally render the distance locally!</p>
+<h2 id="performance-concerns">Performance concerns</h2>
+<p>It was a terrible idea to have the distance calculated on the server. Although
+my home page is static, the time it takes to build that page is <strong>longer than
+expected</strong>.</p>
+<p>So I started to look at this from a different perspective.</p>
+<p><em>What if, instead of calculating the the distance on the server or the client,
+I do it on the database?</em></p>
+<p>I started looking around and installed a Postgres extension called <a href="https://postgis.net/">PostGIS</a> that
+allows storing, indexing and querying geographic data. Perfect.</p>
+<Callout emoji="💡">
+  Supabase has a good documentation about [how to integrate PostGIS to
+  Postgres](https://supabase.com/docs/guides/database/extensions/postgis)
+</Callout>
+<p>But there is no way for me to call it with the Javascript client. So I decided
+to write a SQL function that will later replace my existing search query built
+with the Javascript client.</p>
+<p>So I had to do 2 things</p>
+<ol>
+<li>Create a 1:1 copy of my clientside search query , in SQL.</li>
+<li>Add PostGIS to the query.</li>
+</ol>
+<p>I started asking ChatGPT a bunch of questions. Question after question I started
+building the function from the scratch. Honestly at the time, I had no idea what
+I was writing. <em>SELECT this WHERE that goes here, then SORT BY this and that.</em>
+It was all gibberish in my head.</p>
+<p>I started learning about the different types of JOINS, how to declare variables,
+return query types, creating VIEWS and more. It felt like I was in a foreign country.
+I didn&rsquo;t understand a single syntax.</p>
+<p>After some time, I managed to come up with a pretty <em>decent</em> function query.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">REPLACE</span> <span style="color:#66d9ef">FUNCTION</span> search_cafes (
+</span></span><span style="display:flex;"><span>  search_input text <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>  lat float <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>  long float <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- filters &amp; sort parameters..
+</span></span></span><span style="display:flex;"><span>  limit_value numeric <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">15</span>,
+</span></span><span style="display:flex;"><span>  offset_value numeric <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">RETURNS</span> <span style="color:#66d9ef">TABLE</span> (
+</span></span><span style="display:flex;"><span>  result_count integer,
+</span></span><span style="display:flex;"><span>  id uuid,
+</span></span><span style="display:flex;"><span>  name text,
+</span></span><span style="display:flex;"><span>  rating numeric,
+</span></span><span style="display:flex;"><span>  address text,
+</span></span><span style="display:flex;"><span>  base64 text,
+</span></span><span style="display:flex;"><span>  url text,
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">location</span> text,
+</span></span><span style="display:flex;"><span>  dist_meters float
+</span></span><span style="display:flex;"><span>) <span style="color:#66d9ef">AS</span> <span style="color:#960050;background-color:#1e0010">$$</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">DECLARE</span>
+</span></span><span style="display:flex;"><span>  result_count integer;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">INTO</span> result_count
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">FROM</span> cafes
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#66d9ef">LATERAL</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SELECT</span> images_cafes.base64, images_cafes.url
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> images_cafes
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHERE</span> cafes.id <span style="color:#f92672">=</span> images_cafes.cafe_id <span style="color:#66d9ef">AND</span> (images_cafes.url <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> images_cafes.base64 <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>      ) <span style="color:#66d9ef">AS</span> filtered_images <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SELECT</span> cafe_id, array_agg(locale) <span style="color:#66d9ef">AS</span> locale_names
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> cafe_addresses
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> cafe_id
+</span></span><span style="display:flex;"><span>      ) <span style="color:#66d9ef">AS</span> cafe_addresses <span style="color:#66d9ef">ON</span> cafes.id <span style="color:#f92672">=</span> cafe_addresses.cafe_id
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- ...the rest of the joins...
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>    (search_input <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafes.fts <span style="color:#f92672">@@</span> plainto_tsquery(<span style="color:#e6db74">&#39;english&#39;</span>, search_input))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">AND</span> (filter_locales <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_addresses.locale_names <span style="color:#f92672">&amp;&amp;</span> filter_locales)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">AND</span> (filter_amenities <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_amenities.amenity_names <span style="color:#f92672">&amp;&amp;</span> filter_amenities)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- ...the rest of the filters...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">RETURN</span> QUERY
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> result_count, cafes.id, cafes.name, cafes.rating, cafes.address, filtered_images.base64, filtered_images.url, ST_AsText(cafes.<span style="color:#66d9ef">location</span>) <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">location</span>, ST_Distance(cafes.<span style="color:#66d9ef">location</span>, ST_Point(search_cafes.long, search_cafes.lat)::geography) <span style="color:#66d9ef">AS</span> dist_meters
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> cafes
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#66d9ef">LATERAL</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SELECT</span> images_cafes.base64, images_cafes.url
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> images_cafes
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHERE</span> cafes.id <span style="color:#f92672">=</span> images_cafes.cafe_id <span style="color:#66d9ef">AND</span> (images_cafes.url <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> images_cafes.base64 <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>      ) <span style="color:#66d9ef">AS</span> filtered_images <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> (
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">SELECT</span> cafe_id, array_agg(locale) <span style="color:#66d9ef">AS</span> locale_names
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> cafe_addresses
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> cafe_id
+</span></span><span style="display:flex;"><span>      ) <span style="color:#66d9ef">AS</span> cafe_addresses <span style="color:#66d9ef">ON</span> cafes.id <span style="color:#f92672">=</span> cafe_addresses.cafe_id
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- ...the rest of the joins...
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>      (search_input <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafes.fts <span style="color:#f92672">@@</span> plainto_tsquery(<span style="color:#e6db74">&#39;english&#39;</span>, search_input))
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">AND</span> (filter_locales <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_addresses.locale_names <span style="color:#f92672">&amp;&amp;</span> filter_locales)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">AND</span> (filter_amenities <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_amenities.amenity_names <span style="color:#f92672">&amp;&amp;</span> filter_amenities)
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">--  ...the rest of the filters...
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">CASE</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHEN</span> sort_order <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;desc&#39;</span> <span style="color:#66d9ef">AND</span> sort_by_name <span style="color:#66d9ef">THEN</span> cafes.name <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">DESC</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">CASE</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHEN</span> sort_order <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;asc&#39;</span> <span style="color:#66d9ef">AND</span> sort_by_name <span style="color:#66d9ef">THEN</span> cafes.name <span style="color:#66d9ef">END</span> <span style="color:#66d9ef">ASC</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- the rest of the sorts--...
+</span></span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">CASE</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">WHEN</span> <span style="color:#66d9ef">NOT</span> (sort_by_name <span style="color:#66d9ef">OR</span> sort_by_created_at <span style="color:#66d9ef">OR</span> sort_by_nearby <span style="color:#66d9ef">OR</span> sort_by_rating) <span style="color:#66d9ef">THEN</span> cafes.<span style="color:#66d9ef">location</span> <span style="color:#f92672">&lt;-&gt;</span> ST_Point(search_cafes.long, search_cafes.lat)::geography <span style="color:#66d9ef">END</span>,
+</span></span><span style="display:flex;"><span>      cafes.id <span style="color:#66d9ef">ASC</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">OFFSET</span> offset_value <span style="color:#66d9ef">FETCH</span> <span style="color:#66d9ef">FIRST</span> limit_value <span style="color:#66d9ef">ROWS</span> <span style="color:#66d9ef">ONLY</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p>This was the first iteration of my search engine.</p>
+<ul>
+<li>Returns the number of cafes based on search filters</li>
+<li>Returns the results based on search filters</li>
+<li>Sortable. Sorts by distance by default.</li>
+</ul>
+<p>I ran the query and call it on the homepage and it works as intended!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">supabase</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">createServerClient</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedQuery</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">query</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">?</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">query</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">undefined</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">sanitisedSort</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">sort</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">?</span> decodeURIComponent(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">sort</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">undefined</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">data</span>: <span style="color:#66d9ef">cafes</span>, <span style="color:#a6e22e">error</span> } <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">supabase</span>.<span style="color:#a6e22e">rpc</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;search_cafes_experimental_2&#34;</span>,
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">search_input</span>: <span style="color:#66d9ef">sanitisedQuery</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">lat</span>: <span style="color:#66d9ef">props?.userLocation.lat</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">long</span>: <span style="color:#66d9ef">props?.userLocation.lng</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_locales</span>: <span style="color:#66d9ef">props?.filters?.locales?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_categories</span>: <span style="color:#66d9ef">props?.filters?.categories?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_atmospheres</span>: <span style="color:#66d9ef">props?.filters?.atmospheres?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_accessibilities</span>: <span style="color:#66d9ef">props?.filters?.accessibilities?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_amenities</span>: <span style="color:#66d9ef">props?.filters?.amenities?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_offerings</span>: <span style="color:#66d9ef">props?.filters?.offerings?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_service_options</span>: <span style="color:#66d9ef">props?.filters?.serviceOptions?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">filter_payment_methods</span>: <span style="color:#66d9ef">props?.filters?.paymentMethods?.split</span>(<span style="color:#e6db74">&#34;,&#34;</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort_by_created_at</span>: <span style="color:#66d9ef">sanitisedSort?.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;created_at&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort_by_rating</span>: <span style="color:#66d9ef">sanitisedSort?.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;rating&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort_by_name</span>: <span style="color:#66d9ef">sanitisedSort?.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;name&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort_order</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">sanitisedSort?.split</span>(<span style="color:#e6db74">&#34;-&#34;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">?</span>.<span style="color:#a6e22e">split</span>(<span style="color:#e6db74">&#34;:&#34;</span>)[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;asc&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;desc&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">sort_by_nearby</span>: <span style="color:#66d9ef">props?.nearby</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">limit_value</span>: <span style="color:#66d9ef">12</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">offset_value</span><span style="color:#f92672">:</span> (Number(<span style="color:#a6e22e">props</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">page</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">12</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">error</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">message</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#a6e22e">error</span>.<span style="color:#a6e22e">message</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> { <span style="color:#a6e22e">cafes</span>, <span style="color:#a6e22e">count</span>: <span style="color:#66d9ef">cafes?.</span>[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">?</span>.<span style="color:#a6e22e">result_count</span> <span style="color:#f92672">||</span> <span style="color:#ae81ff">0</span> }
+</span></span></code></pre></div><p>The number of lines of code has also reduced to 87. Awesome, so I guess that&rsquo;s it
+then!</p>
+<h2 id="performance-tuning">Performance tuning</h2>
+<p>Few days later, I realised that this function is very very <strong>VERY slow</strong>.
+I checked the logs for the slowest response time and get the highest <code>origin_time</code>
+and it was about <strong>50 seconds</strong>!</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1692825341/Screenshot_2023-08-24_at_5.15.03_AM_xcqbub.png" alt="slowest response time"></p>
+<p>Here are the load times on the browser when I first load the home page:</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1692825721/Screenshot_2023-08-23_at_6.41.57_PM_flyavk.png" alt="initial load time"></p>
+<p><em>18 seconds to FCP?!</em> I started looking into performance tuning, in hopes that I will be able to
+identify the factors that are affecting the performance of this function.</p>
+<p>I found out about <a href="https://www.pgmustard.com/">pgMustard</a> and it was really easy
+to use, but trying to analyze a function query really did not produce any potential
+areas to improve on.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1692826001/Screenshot_2023-08-24_at_5.26.33_AM_mhfrfd.png" alt="pgmustard initial result"></p>
+<Callout emoji="💡">
+  pgMustard is a tool I will definitely revisit again in the future. Check out
+  their [youtube channel](https://www.youtube.com/@pgMustard). The founder
+  explains how to use it and how it can resolve some query problems.
+</Callout>
+<p>Then, I prompted ChatGPT</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>if i were to give you a postgres query, can you help modify it to make it more optmised?
+</span></span></code></pre></div><p>I copy and pasted my function query and ChatGPT responded a list of possible ways to optimise performance</p>
+<ol>
+<li>
+<p><strong>Indexing</strong>: Ensure that the columns used in join conditions, filtering, and sorting are properly indexed. Indexing can significantly speed up data retrieval. Based on your queries, it seems like the id columns in various tables, as well as fts and location columns, should be indexed.</p>
+</li>
+<li>
+<p><strong>Reduce Subqueries</strong>: In your function, you have several subqueries that aggregate data from related tables. Instead of using subqueries in the main query, you can consider creating views for these aggregated data and join the views in the main query. This can help simplify the main query and improve its readability.</p>
+</li>
+<li>
+<p><strong>Caching</strong>: If the data in your related tables (e.g., cafe_amenities, cafe_atmospheres) doesn&rsquo;t change frequently, you could consider creating materialized views for these aggregations. Materialized views store the aggregated results and can be refreshed periodically or when new data is added. This can help reduce the complexity of your query and improve performance.</p>
+</li>
+<li>
+<p><strong>Use of EXISTS</strong>: In some cases, you can use the EXISTS keyword to check for the existence of related data rather than joining with a subquery that retrieves the data. This can lead to more efficient query plans.</p>
+</li>
+<li>
+<p><strong>Review Data Types</strong>: Make sure the data types used for comparisons and joins are consistent. Mismatched data types can lead to slower query execution.</p>
+</li>
+<li>
+<p><strong>Batch Loading</strong>: If you&rsquo;re dealing with a large amount of data, consider using pagination and fetching data in batches rather than loading all the data at once. This can help manage memory and improve query performance.</p>
+</li>
+<li>
+<p><strong>Profiling and Testing</strong>: Always profile and test your queries with real data and production-like scenarios to identify bottlenecks and optimize accordingly. PostgreSQL provides tools like EXPLAIN to analyze query execution plans.</p>
+</li>
+<li>
+<p><strong>Regular Maintenance</strong>: Ensure that your database is regularly maintained, including vacuuming and analyzing to optimize performance.</p>
+</li>
+</ol>
+<p>Here are the ones that I managed to do and worked:</p>
+<ul>
+<li>Reduce subqueries by using CTEs</li>
+<li>Create materialized views for aggregated data</li>
+<li>Using EXISTS in my WHERE conditions</li>
+</ul>
+<p>Here are what didn&rsquo;t work:</p>
+<ul>
+<li>Tune <code>work_mem</code></li>
+</ul>
+<p>Honestly, with the level of knowledge I have about SQL right now, I do not dare touching <code>work_mem</code> params&hellip;</p>
+<h3 id="benchmarking">Benchmarking</h3>
+<p>I will be benchmarking the results of the optimisations based on the <code>execution_time</code>
+that I get from running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">explain</span> (<span style="color:#66d9ef">analyze</span>, format text, buffers, <span style="color:#66d9ef">verbose</span>, settings)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">select</span> search_cafes_experimental_2(<span style="color:#e6db74">&#39;cafe&#39;</span>, <span style="color:#ae81ff">3</span>.<span style="color:#ae81ff">139003</span>, <span style="color:#ae81ff">101</span>.<span style="color:#ae81ff">686852</span>, array [<span style="color:#e6db74">&#39;Assistive hearing loop&#39;</span>], array [<span style="color:#e6db74">&#39;Wi-Fi&#39;</span>], array [<span style="color:#e6db74">&#39;Cozy&#39;</span>], array [<span style="color:#e6db74">&#39;Cafe&#39;</span>], array [<span style="color:#e6db74">&#39;Coffee&#39;</span>], array [<span style="color:#e6db74">&#39;Credit cards&#39;</span>], array [<span style="color:#e6db74">&#39;Dine-in&#39;</span>], array [<span style="color:#e6db74">&#39;Kuala Lumpur&#39;</span>])
+</span></span></code></pre></div><p>This call returns the simplest result. This is so that I can benchmark the performance at it&rsquo;s less intensive state.</p>
+<h3 id="starting-line">Starting line</h3>
+<p><Callout emoji="📈">Execution time: 300ms - 304ms</Callout></p>
+<p>To see the initial query, <a href="#performance-concerns">go here</a>.</p>
+<h3 id="reducing-subqueries-and-create-materialized-views">Reducing subqueries and create materialized views</h3>
+<p>First thing I started doing was to <strong>move all subqueries into CTEs</strong> and then <strong>created materialized views
+for all the subqueries that aggregates</strong>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> MATERIALIZED <span style="color:#66d9ef">VIEW</span> cafe_address_locale_names_agg <span style="color:#66d9ef">AS</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> cafe_id, array_agg(locale) <span style="color:#66d9ef">AS</span> locale_names
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> cafe_addresses
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> cafe_id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> MATERIALIZED <span style="color:#66d9ef">VIEW</span> cafe_amenity_names_agg <span style="color:#66d9ef">AS</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> cafe_id, array_agg(amenity_name) <span style="color:#66d9ef">AS</span> amenity_names
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">FROM</span> cafe_amenities
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> cafe_id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Other materialized views create queries
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> idx_cafe_address_locale_names_agg_cafe_id <span style="color:#66d9ef">ON</span> cafe_address_locale_names_agg (cafe_id);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> idx_cafe_amenity_names_agg_cafe_id <span style="color:#66d9ef">ON</span> cafe_amenity_names_agg (cafe_id);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">-- Other index creation for the materialized views
+</span></span></span></code></pre></div><p>Then I implemented those views into the function within the JOINs and WHEREs</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">-- Function code...
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">BEGIN</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">WITH</span> filtered_images <span style="color:#66d9ef">AS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> cafe_id, images_cafes.base64, images_cafes.url
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> images_cafes
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> images_cafes.url <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> images_cafes.base64 <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
+</span></span><span style="display:flex;"><span>  ),
+</span></span><span style="display:flex;"><span>  cafes_data <span style="color:#66d9ef">AS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>      cafes.id,
+</span></span><span style="display:flex;"><span>      cafes.name,
+</span></span><span style="display:flex;"><span>      cafes.rating,
+</span></span><span style="display:flex;"><span>      cafes.address,
+</span></span><span style="display:flex;"><span>      cafes.<span style="color:#66d9ef">location</span>,
+</span></span><span style="display:flex;"><span>      ST_Distance(cafes.<span style="color:#66d9ef">location</span>, ST_Point(search_cafes_experimental_2.long, search_cafes_experimental_2.lat)::geography) <span style="color:#66d9ef">AS</span> dist_meters
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> cafes
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> filtered_images <span style="color:#66d9ef">ON</span> cafes.id <span style="color:#f92672">=</span> filtered_images.cafe_id
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> cafe_address_locale_names_agg <span style="color:#66d9ef">ON</span> cafes.id <span style="color:#f92672">=</span> cafe_address_locale_names_agg.cafe_id
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Other left joins
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>      (search_input <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafes.fts <span style="color:#f92672">@@</span> plainto_tsquery(<span style="color:#e6db74">&#39;english&#39;</span>, search_input))
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">AND</span> (filter_locales <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_address_locale_names_agg.locale_names <span style="color:#f92672">&amp;&amp;</span> filter_locales)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">AND</span> (filter_amenities <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafe_amenity_names_agg.amenity_names <span style="color:#f92672">&amp;&amp;</span> filter_amenities)
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">-- Other filter conditions
+</span></span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">INTO</span> result_count
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">FROM</span> cafes_data;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">RETURN</span> QUERY
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WITH</span> filtered_images <span style="color:#66d9ef">AS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> cafe_id, images_cafes.base64, images_cafes.url
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> images_cafes
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> images_cafes.url <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> images_cafes.base64 <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
+</span></span><span style="display:flex;"><span>  ),
+</span></span><span style="display:flex;"><span>  cafes_data <span style="color:#66d9ef">AS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Similar to CTE above
+</span></span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>      result_count,
+</span></span><span style="display:flex;"><span>      cafes_data.id,
+</span></span><span style="display:flex;"><span>      cafes_data.name,
+</span></span><span style="display:flex;"><span>      cafes_data.rating,
+</span></span><span style="display:flex;"><span>      cafes_data.address,
+</span></span><span style="display:flex;"><span>      base64,
+</span></span><span style="display:flex;"><span>      url,
+</span></span><span style="display:flex;"><span>      ST_AsText(cafes_data.<span style="color:#66d9ef">location</span>) <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">location</span>,
+</span></span><span style="display:flex;"><span>      cafes_data.dist_meters
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> cafes_data
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">-- Sorts and offsets
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">END</span>;
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">$$</span> <span style="color:#66d9ef">LANGUAGE</span> plpgsql;
+</span></span></code></pre></div><p>Once I was done with that, I ran the query and the <strong>execution time went down by
+70%</strong>!</p>
+<p><Callout emoji="📈">Execution time: 90ms - 95ms</Callout></p>
+<p>I was surprised how effective Materialized View is. It helps to cache the aggregate
+queries which helps in my situation since the values don&rsquo;t change much as the aggregated
+column values are mostly <strong>constant</strong>.</p>
+<p>On to the next one!</p>
+<h3 id="using-exists">Using EXISTS</h3>
+<p>EXISTS helps in checking if the requested values exists within the aggregated values first
+before returning the values. To put it layman terms,</p>
+<p>I see a door infront of me and I want to know if there is a pot of gold inside.</p>
+<ul>
+<li>Without EXISTS - I walk into the door and I would either walk out with a pot of gold, or empty handed.</li>
+<li>With EXISTS - I walk to the door and peek through the keyhole to see if there is a pot of gold or not,
+eliminating the 50% chance of feeling upset about not getting a pot of gold.</li>
+</ul>
+<p>At least that is how I understand it.</p>
+<p>I started implementing EXISTS on my WHERE conditions</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#66d9ef">WHERE</span>
+</span></span><span style="display:flex;"><span>  (search_input <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> cafes.fts <span style="color:#f92672">@@</span> plainto_tsquery(<span style="color:#e6db74">&#39;english&#39;</span>, search_input))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">AND</span> (filter_locales <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">EXISTS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> cafe_address_locale_names_agg
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> cafes.id <span style="color:#f92672">=</span> cafe_address_locale_names_agg.cafe_id <span style="color:#66d9ef">AND</span> cafe_address_locale_names_agg.locale_names <span style="color:#f92672">&amp;&amp;</span> filter_locales
+</span></span><span style="display:flex;"><span>  ))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">AND</span> (filter_amenities <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">OR</span> <span style="color:#66d9ef">EXISTS</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> cafe_amenity_names_agg
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">WHERE</span> cafes.id <span style="color:#f92672">=</span> cafe_amenity_names_agg.cafe_id <span style="color:#66d9ef">AND</span> cafe_amenity_names_agg.amenity_names <span style="color:#f92672">&amp;&amp;</span> filter_amenities
+</span></span><span style="display:flex;"><span>  ))
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">-- Applied the same logic to the other conditions
+</span></span></span></code></pre></div><p>Then I ran the query again, and boom! Another <strong>50% decrease in response time</strong>!
+Bringing the total execution time down to <strong>45ms</strong>!</p>
+<p><strong>That is 85% decrease in total from the initial execution time.</strong></p>
+<p><Callout emoji="📈">Execution time: 45ms - 50ms</Callout></p>
+<h2 id="performance-on-the-web">Performance on the Web</h2>
+<p>After further touchups on the search engine query and some quality of life improvements on Cafeist,
+I deployed it to production and started to test out the performance by benchmarking the before and after
+load times and it really shows</p>
+<p>Before the optimisation, the load times were <strong>between 6 seconds to 16 seconds</strong>. I tested this out by clicking
+random filters until the URL became unreadable on the searchbar.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1692825721/Screenshot_2023-08-23_at_6.41.57_PM_flyavk.png" alt="initial load time"></p>
+<p>After the optimisation, <strong>load times were down between 500 ms to 3 seconds max</strong>. That is a very big improvement.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1692828768/Screenshot_2023-08-23_at_7.08.55_PM_fwdswp_7e7ed1.png" alt="after optimisation load times"></p>
+<p>The calls were made 4 times after selecting multiple filters.</p>
+<h2 id="further-development">Further development</h2>
+<p>Knowing how deep the rabbit hole goes for SQL, I know that there can be more improvements but
+for now, I am good with what I have achieved. Getting an 85% reduction in execution time is mind-boggling
+even for me.</p>
+<p>There are platforms like <a href="https://www.algolia.com/">Algolia</a> that can just solve this problem with a click of
+a button, and it did cross my mind before but if I am being honest, the issue that
+I ended up solving, wasn&rsquo;t really a big deal and I am not dealing with millions of
+data. Perhaps when my data scales in the future, I will start branching out to using
+different tools since time would be the main factor in cost.</p>
+<p>That said, I pretty much learn alot about SQL queries in 3 days. Would I do it again? Maybe.
+Do I like it? <strong>Definitely no</strong>.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fhow-i-reduced-a-search-function-query-s-execution-time-by-85%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

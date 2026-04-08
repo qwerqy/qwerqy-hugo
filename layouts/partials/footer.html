@@ -1,0 +1,17 @@
+<footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="{{ .Site.Params.social.github }}" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="{{ .Site.Params.social.linkedin }}" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="{{ .Site.Params.social.instagram }}" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="{{ .Site.Params.social.twitter }}" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>

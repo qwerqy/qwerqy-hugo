@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Authenticating Battlev with Discord OAuth2.0 [Part 2] | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="OAuth 2.0, Battlev project, Nodejs-based server, Passport.js, Client-side and server, CORS, User authentication, Discord bot, Analytics dashboard, User interactions, Nuxt app, Endpoint /api, Passport.js&#39;s documentation, Discord&#39;s OAuth 2.0 documentation, Passport-oauth2, Passport-custom, Session storage, Access token and refresh token, Passport-discord-oauth2, Redis, Session cookies, Window.document.cookie method, Dashboard integration." />
+
+
+<meta property="og:title" content="Authenticating Battlev with Discord OAuth2.0 [Part 2]" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Authenticating Battlev with Discord OAuth2.0 [Part 2]" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Authenticating Battlev with Discord OAuth2.0 [Part 2]</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / April 4, 2019</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">4 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p>Hello my fellow readers! I am back with exciting news!</p>
+<p>I managed to get the OAuth 2.0 <em>thing</em> working to log in into the dashboard of my project Battlev. It was hard at first to be honest. It was actually the first time I&rsquo;m implementing authentication on a Nodejs-based server.</p>
+<p>Thanks to the help of <a href="https://passportjs.org/" title="Passportjs">Passport.js</a>, I don&rsquo;t have to go through the whole process of creating sessions on the server and client. With that being said, do note that the client-side and the server are both running in separate ports. Had trouble with CORS but I solved it. In this post, I will try my best to explain the steps I took to implement this authentication feature.</p>
+<h2 id="why-oauth-20">Why OAuth 2.0?</h2>
+<p>In case if any of you are wondering why I am going for an OAuth 2.0 type of authentication, is because of 2 things:</p>
+<ul>
+<li>The core feature of this whole project is the Discord bot, so having an authentication with Discord is crucial if I am integrating the analytics dashboard for the user to check on user interactions with the bot on his servers.</li>
+<li>I hate having to type in my password. I feel like most of you feel the same thing.</li>
+</ul>
+<p>In my current job, I work on the respondent&rsquo;s app, both web and mobile. I also take part in maintaining it&rsquo;s server. Throughout my job, I had to deal with problems involving user authentication via phone number, logging in via a magic link sent to a respondent&rsquo;s email, authenticating in between, exposed endpoints and so on. To clarify even more, I had no experience in doing this; the whole authentication system for a Nodejs back-end. Hell I don&rsquo;t even remember how I got a Google OAuth 2.0 feature working back when I was coding in Ruby.</p>
+<p>Starting off, I created a simple Login button on the homepage of my Nuxt app (Client-side). Then I exposed an endpoint <code>/api</code> and later continued with me reading through Passport.js&rsquo;s documentation in its dark website. I went through the documentations for about half an hour until I can understand it fundamentally. Afterwards, I started reading through Discord&rsquo;s OAuth 2.0 documentation on <a href="https://discordapp.com/developers/docs/topics/oauth2#shared-resources" title="shared resources">Shared Resources</a>, the endpoints they exposed for <code>authorize</code>, <code>token handling</code> &amp; <code>token revoke</code>.</p>
+<blockquote>
+<p><em>I said to myself &ldquo;This ain&rsquo;t too bad, I can do this.&rdquo;</em></p>
+</blockquote>
+<p>There I was, trying to create a working authentication system using one of Passport.js&rsquo;s strategy, <code>passport-oauth2</code> . I don&rsquo;t know why but I kept on getting errors saying some of the properties returned undefined. So maybe Discord&rsquo;s OAuth 2.0 strategy is a little different? So I tried creating a strategy on my own using<code> passport-custom</code>.</p>
+<p>I spent about a good 3 hours working on the callback logic, then the storage of access token and refresh token. I went to guides after guides on the internet, checking out how others would approach it and then finally, I was done. Started to test it out, it works! Clicking the login will redirect me to the authorize access page, then I got brought back to the callback URL. However, something was wrong.</p>
+<p>The session wasn&rsquo;t stored on the back-end. I tried checking <code>req.user</code> and it returned undefined. What&rsquo;s happening? I continued working on it for another 4 hours, while being idle on my Discord server&rsquo;s voice channel, but nothing changes. Took a break, went to sleep, go to work, back home again. Next!</p>
+<p>This time, I went on and installed a module called <code>passport-discord-oauth2</code>. It wasn&rsquo;t made officially by Jared but it&rsquo;s by another programmer, <a href="https://github.com/RafaelVidaurre/passport-discord-oauth2" title="Rafael Vidaurre">Rafael Vidaurre</a>. Downloads count looked good, heck why not. I set it up, commenting all of my previous custom strategy and gave it go.</p>
+<p>Oh nice. It works! And since it&rsquo;s based on the <code>passport-oauth2</code>, I can just slap it on my callback endpoint without much code. It fits good. However, the problem still persists; session still not working. After about a few hours trying to find out the problem, I finally did. It was because my session cookie depended on the memory storage of my server, so whenever I restart the server, the memory gets erased in the process. I integrated <a href="https://redis.io/" title="Redis">Redis</a> as the store for my session cookies, and that solved my problem.</p>
+<p>I managed to also get the front-end to work by utilising the <code>window.document.cookie</code> method to identify if a user is logged in or not. I feel like it&rsquo;s a hack, but still, if it works, it stays.</p>
+<p>Anyway to sum it all up, I managed to integrate it in 2 days, I am now working on integrating the dashboard. I see you guys on the next post!</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fauthenticating-battlev-with-discord-oauth2-0-part-2%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

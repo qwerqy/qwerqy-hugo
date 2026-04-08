@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Exploring Polymorphic Components in React with TypeScript | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Polymorphic components in React, Using TypeScript with polymorphic components, Understanding polymorphism in React, Polymorphic component tutorial, How to create versatile UI elements in React, Building reusable components in React, Improving React components with polymorphism, Understanding TypeScript&#39;s type system in React, Creating a polymorphic button component in React, Enhancing UI adaptability with polymorphic components, Leveraging polymorphic components in React, Polymorphic components for component libraries, Advanced use cases of polymorphic components, Introduction to polymorphism in React and TypeScript, Building a Text component with polymorphism in React, Real world use of polymorphic components in React, Exploring React component polymorphism, Implementing Polymorphism into Button in React, Implementing Polymorphism into Text in React, Using polymorphic components for modular and reusable code." />
+
+
+<meta property="og:title" content="Exploring Polymorphic Components in React with TypeScript" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Exploring Polymorphic Components in React with TypeScript" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Exploring Polymorphic Components in React with TypeScript</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / June 15, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">6 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p><strong>Polymorphic components</strong> are a powerful concept within React that enables <strong>adaptability</strong> and <strong>flexibility</strong>. In this blog post, we&rsquo;ll explore polymorphic components and demonstrate their usage with TypeScript.</p>
+<h2 id="understanding-polymorphic-components">Understanding Polymorphic Components</h2>
+<p>Polymorphism refers to the ability of an object to take on different forms or behaviors based on the context. Think of it as <em>Ditto</em> from <strong>Pokemon.</strong></p>
+<p><img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/132.png" alt="Ditto"></p>
+<p>In the context of React:</p>
+<ul>
+<li>Polymorphic components in React allow for the creation of <strong>versatile UI</strong> elements that can <strong>adapt their rendering and behavior</strong> based on the context.</li>
+<li>By leveraging polymorphic components, developers can build <strong>reusable</strong> and <strong>adaptable</strong> components that suit different use cases.</li>
+<li><strong>TypeScript&rsquo;s</strong> type system enhances the <strong>correctness</strong> and <strong>maintainability</strong> of polymorphic components, providing <strong>strong typing</strong> and <strong>error detection</strong>.</li>
+</ul>
+<p>If you are in a scenario of building a components library, having a few components that adapts polymorphism helps</p>
+<ul>
+<li><strong>reduce repetitive</strong> components for some use cases.</li>
+<li>by creating <strong>multiple variants</strong> of a single component.</li>
+<li>because it’s just cool.</li>
+</ul>
+<h2 id="implementing-polymorphism-into-button">Implementing Polymorphism into Button</h2>
+<h3 id="1-type">1. Type</h3>
+<p>Let&rsquo;s create a simple example of a polymorphic button component using TypeScript. We&rsquo;ll start by defining the props interface that our button component can accept:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ButtonProps</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">onClick</span><span style="color:#f92672">:</span> () <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">variant</span><span style="color:#f92672">?:</span> <span style="color:#e6db74">&#34;primary&#34;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#34;secondary&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disabled?</span>: <span style="color:#66d9ef">boolean</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Other button-related props
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="2-component">2. Component</h3>
+<p>Now, let&rsquo;s create our Button component. I’ve also enhanced the existing <code>ButtonProps</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ButtonElement</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">HTMLButtonElement</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">HTMLAnchorElement</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ButtonProps</span>&lt;<span style="color:#f92672">E</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">ButtonElement</span>&gt; <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">as</span><span style="color:#f92672">?:</span> <span style="color:#66d9ef">keyof</span> <span style="color:#a6e22e">JSX</span>.<span style="color:#a6e22e">IntrinsicElements</span> <span style="color:#f92672">|</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ComponentType</span>&lt;<span style="color:#f92672">E</span>&gt;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">variant</span><span style="color:#f92672">?:</span> <span style="color:#e6db74">&#34;primary&#34;</span> <span style="color:#f92672">|</span> <span style="color:#e6db74">&#34;secondary&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disabled?</span>: <span style="color:#66d9ef">boolean</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Other button-related props
+</span></span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Button</span> <span style="color:#f92672">=</span> &lt;<span style="color:#f92672">E</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">ButtonElement</span>&gt;({
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">as</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Component</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;button&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">variant</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;primary&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">disabled</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  ...<span style="color:#a6e22e">props</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#f92672">:</span> <span style="color:#a6e22e">ButtonProps</span>&lt;<span style="color:#f92672">E</span>&gt;) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">Component</span> <span style="color:#a6e22e">disabled</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">disabled</span>} <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">`button </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">variant</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>} {<span style="color:#a6e22e">...props</span>} /&gt;
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">Button</span>
+</span></span></code></pre></div><p>In this implementation, we introduce a type parameter <code>E</code> that extends <code>ButtonElement</code> to ensure that the <code>as</code> prop provided matches the appropriate HTML element types (<code>HTMLButtonElement</code> or <code>HTMLAnchorElement</code>).</p>
+<h3 id="3-implementation">3. Implementation</h3>
+<p>Now, let&rsquo;s see how we can use our polymorphic Button component:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">App</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{() <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Button clicked&#34;</span>)}&gt;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Default</span> <span style="color:#a6e22e">Button</span>
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Button</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Button</span> <span style="color:#a6e22e">as</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;a&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&lt;https://example.com&gt;&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Link</span> <span style="color:#a6e22e">Button</span>
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Button</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Button</span> <span style="color:#a6e22e">as</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">CustomComponent</span>}&gt;<span style="color:#a6e22e">Custom</span> <span style="color:#a6e22e">Button</span>&lt;/<span style="color:#f92672">Button</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In this example, we demonstrate the versatility of the Button component. We can use it as a regular button, an anchor tag, or even provide a custom component to be rendered.</p>
+<p>You might ask, what about implementing something a little more advanced? Like passing down <code>ref</code> or use a more <strong>sandbox</strong> element like div so I can instead inject Card, Section, etc? Well yes, that is all possible. Let’s visit that in the next section of this blog.</p>
+<h2 id="implementing-polymorphism-into-text">Implementing Polymorphism into Text</h2>
+<p>For this implementation, I will create a <code>Text</code> component with the following goals:</p>
+<ul>
+<li>It must be able to pass down <code>ref</code></li>
+<li>It must be able to accept any custom components or any components that can extend from <code>span</code>. This can be from <code>h1</code>, <code>h2</code>, …, <code>p</code> or any.</li>
+</ul>
+<h3 id="1-type-1">1. Type</h3>
+<p>Let’s start off with the type that will be extended from the component type that we’re building.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">as</span><span style="color:#f92672">?:</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>This type has a generic <code>C</code> . Let’s use <code>C</code> to better understand that it is the “C”omponent we are trying to polymorph with.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>, <span style="color:#a6e22e">P</span>&gt; <span style="color:#f92672">=</span> <span style="color:#66d9ef">keyof</span> (<span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt; <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">P</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentProp</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">PropsWithChildren</span>&lt;<span style="color:#f92672">Props</span> <span style="color:#960050;background-color:#1e0010">&amp;</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt;&gt; <span style="color:#f92672">&amp;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Omit</span>&lt;<span style="color:#f92672">React.ComponentPropsWithoutRef</span>&lt;<span style="color:#f92672">C</span>&gt;, <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt;&gt;
+</span></span></code></pre></div><p>Two types are introduced here:</p>
+<ul>
+<li><code>PropsToOmit</code> is a helper type to help omit props from our <code>as</code> component to the <code>Text</code> component to avoid type merging.</li>
+<li><code>PolymorphicComponentProp</code> is the type that will be used for our <code>Text</code> component but this type isn’t the one with <code>ref</code> built in.</li>
+</ul>
+<p>So let’s start building the type that will accept <code>ref</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ComponentPropsWithRef</span>&lt;<span style="color:#f92672">C</span>&gt;[<span style="color:#e6db74">&#34;ref&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentPropWithRef</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">PolymorphicComponentProp</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt; <span style="color:#f92672">&amp;</span> { <span style="color:#a6e22e">ref?</span>: <span style="color:#66d9ef">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span>&gt; }
+</span></span></code></pre></div><p>Two more types introduced:</p>
+<ul>
+<li><code>PolymorphicRef</code> is the type only for the <code>ref</code> prop.</li>
+<li><code>PolymorphicComponentPropWithRef</code> is the type that is built on top of <code>PolymorphicComponentProp</code> with addition to <code>PolymorphicRef</code></li>
+</ul>
+<p>Now all the types are in place. Everything should look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">as</span><span style="color:#f92672">?:</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>, <span style="color:#a6e22e">P</span>&gt; <span style="color:#f92672">=</span> <span style="color:#66d9ef">keyof</span> (<span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt; <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">P</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ComponentPropsWithRef</span>&lt;<span style="color:#f92672">C</span>&gt;[<span style="color:#e6db74">&#34;ref&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentProp</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">PropsWithChildren</span>&lt;<span style="color:#f92672">Props</span> <span style="color:#960050;background-color:#1e0010">&amp;</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt;&gt; <span style="color:#f92672">&amp;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Omit</span>&lt;<span style="color:#f92672">React.ComponentPropsWithoutRef</span>&lt;<span style="color:#f92672">C</span>&gt;, <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt;&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentPropWithRef</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">PolymorphicComponentProp</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt; <span style="color:#f92672">&amp;</span> { <span style="color:#a6e22e">ref?</span>: <span style="color:#66d9ef">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span>&gt; }
+</span></span></code></pre></div><h3 id="2-component-1">2. Component</h3>
+<p>Let’s take a look on how we create the <code>Text</code> component with the types.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextProps</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span> <span style="color:#a6e22e">PolymorphicComponentPropWithRef</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span>,
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">color?</span>: <span style="color:#66d9ef">string</span> }
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextComponent</span> <span style="color:#f92672">=</span> &lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#e6db74">&#34;span&#34;</span>&gt;(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span>: <span style="color:#66d9ef">TextProps</span>&lt;<span style="color:#f92672">C</span>&gt;
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ReactElement</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Text</span>: <span style="color:#66d9ef">TextComponent</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">forwardRef</span>(
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#e6db74">&#34;span&#34;</span>&gt;(
+</span></span><span style="display:flex;"><span>    { <span style="color:#66d9ef">as</span>, <span style="color:#a6e22e">color</span>, <span style="color:#a6e22e">children</span> }<span style="color:#f92672">:</span> <span style="color:#a6e22e">TextProps</span>&lt;<span style="color:#f92672">C</span>&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ref?</span>: <span style="color:#66d9ef">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span>&gt;
+</span></span><span style="display:flex;"><span>  ) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Component</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">as</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;span&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">style</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">color</span> <span style="color:#f92672">?</span> { <span style="color:#a6e22e">style</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">color</span> } } <span style="color:#f92672">:</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Component</span> {<span style="color:#a6e22e">...style</span>} <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ref</span>}&gt;
+</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">children</span>}
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Component</span>&gt;
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>I created a <code>TextProps</code> type that is using <code>PolymorphicComponentPropWithRef</code> with the generic <code>C</code> being passed down. <code>TextComponent</code> is vital as it will help show <strong>additional props</strong> from the passed component in <code>as</code> .</p>
+<p>Then, I created the <code>Text</code> component that will be used for this example.</p>
+<h3 id="3-final-implementation">3. Final Implementation</h3>
+<p>With everything done, it should look something like this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">as</span><span style="color:#f92672">?:</span> <span style="color:#a6e22e">C</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>, <span style="color:#a6e22e">P</span>&gt; <span style="color:#f92672">=</span> <span style="color:#66d9ef">keyof</span> (<span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt; <span style="color:#f92672">&amp;</span> <span style="color:#a6e22e">P</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ComponentPropsWithRef</span>&lt;<span style="color:#f92672">C</span>&gt;[<span style="color:#e6db74">&#34;ref&#34;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentProp</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">PropsWithChildren</span>&lt;<span style="color:#f92672">Props</span> <span style="color:#960050;background-color:#1e0010">&amp;</span> <span style="color:#a6e22e">AsProp</span>&lt;<span style="color:#f92672">C</span>&gt;&gt; <span style="color:#f92672">&amp;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Omit</span>&lt;<span style="color:#f92672">React.ComponentPropsWithoutRef</span>&lt;<span style="color:#f92672">C</span>&gt;, <span style="color:#a6e22e">PropsToOmit</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt;&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PolymorphicComponentPropWithRef</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ElementType</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Props</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">PolymorphicComponentProp</span>&lt;<span style="color:#f92672">C</span>, <span style="color:#a6e22e">Props</span>&gt; <span style="color:#f92672">&amp;</span> { <span style="color:#a6e22e">ref?</span>: <span style="color:#66d9ef">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span>&gt; }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextProps</span>&lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span>&gt; <span style="color:#f92672">=</span> <span style="color:#a6e22e">PolymorphicComponentPropWithRef</span><span style="color:#f92672">&lt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">C</span>,
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">color?</span>: <span style="color:#66d9ef">string</span> }
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">TextComponent</span> <span style="color:#f92672">=</span> &lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#e6db74">&#34;span&#34;</span>&gt;(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">props</span>: <span style="color:#66d9ef">TextProps</span>&lt;<span style="color:#f92672">C</span>&gt;
+</span></span><span style="display:flex;"><span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">ReactElement</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">null</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Text</span>: <span style="color:#66d9ef">TextComponent</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">forwardRef</span>(
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">C</span> <span style="color:#a6e22e">extends</span> <span style="color:#a6e22e">React.ElementType</span> <span style="color:#960050;background-color:#1e0010">=</span> <span style="color:#e6db74">&#34;span&#34;</span>&gt;(
+</span></span><span style="display:flex;"><span>    { <span style="color:#66d9ef">as</span>, <span style="color:#a6e22e">color</span>, <span style="color:#a6e22e">children</span>, ...<span style="color:#a6e22e">rest</span> }<span style="color:#f92672">:</span> <span style="color:#a6e22e">TextProps</span>&lt;<span style="color:#f92672">C</span>&gt;,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ref?</span>: <span style="color:#66d9ef">PolymorphicRef</span>&lt;<span style="color:#f92672">C</span>&gt;
+</span></span><span style="display:flex;"><span>  ) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Component</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">as</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;span&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">style</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">color</span> <span style="color:#f92672">?</span> { <span style="color:#a6e22e">style</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">color</span> } } <span style="color:#f92672">:</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Component</span> {<span style="color:#a6e22e">...style</span>} <span style="color:#a6e22e">ref</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ref</span>} {<span style="color:#a6e22e">...rest</span>}&gt;
+</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">children</span>}
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Component</span>&gt;
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><h3 id="4-in-action">4. In Action</h3>
+<p>Let’s place it in a basic Vite React app and run it</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">App() {</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{ <span style="color:#a6e22e">display</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;flex&#34;</span>, <span style="color:#a6e22e">flexDirection</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;column&#34;</span> }}&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Text</span>&gt;<span style="color:#a6e22e">Hello</span><span style="color:#f92672">!</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">polymorphic</span>.&lt;/<span style="color:#f92672">Text</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Text</span> <span style="color:#a6e22e">as</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;a&#34;</span>} <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://qwerqy.com&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Hello</span><span style="color:#f92672">!</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">link</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">polymorphic</span>
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Text</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Text</span> <span style="color:#a6e22e">as</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;h3&#34;</span>}&gt;<span style="color:#a6e22e">Hello</span><span style="color:#f92672">!</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">H3</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">polymorphic</span>.&lt;/<span style="color:#f92672">Text</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Text</span> <span style="color:#a6e22e">as</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;p&#34;</span>}&gt;<span style="color:#a6e22e">Hello</span><span style="color:#f92672">!</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">paragraph</span> <span style="color:#a6e22e">and</span> <span style="color:#a6e22e">I</span> <span style="color:#a6e22e">am</span> <span style="color:#a6e22e">polymorphic</span>.&lt;/<span style="color:#f92672">Text</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">App</span>
+</span></span></code></pre></div><p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/v1686654089/Screenshot_2023-06-13_at_7.00.34_PM_vqki9p.png" alt="final implementation"></p>
+<p>And there you have it, your very own polymorphic component!</p>
+<p>Remember, polymorphic components are just one of many techniques available in the React ecosystem to help create modular and reusable code. Experiment with them, explore the possibilities, and continue honing your React skills to build outstanding applications.</p>
+<p>I will be honest, the first time I heard about polymorphic component and what it does, my jaw dropped. Funny enough, I have been using polymorphic components even before I found out it is called <strong>polymorphic components</strong>. Back in 2021, I work alot with a React components library called Mantine and one of its components, Anchor, <a href="https://mantine.dev/core/anchor/#polymorphic-component">has this feature baked in</a>.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fexploring-polymorphic-components-in-react-with-typescript%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

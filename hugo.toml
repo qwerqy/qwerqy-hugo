@@ -1,0 +1,42 @@
+baseURL = "https://aminroslan.dev"
+languageCode = "en-us"
+title = "Amin Roslan"
+paginate = 10
+enableRobotsTXT = true
+
+[params]
+  description = "Software engineer, Typescript enthusiast, and data-drive solutionist."
+  author = "Amin Roslan"
+  siteUrl = "https://aminroslan.dev"
+  email = "amin@tukang.dev"
+  emailAlt = "amnrsln@gmail.com"
+  yandexVerification = "0a57751d5ee67e3b"
+  themeColor = "#2b3a55"
+
+  [params.social]
+    github = "https://github.com/qwerqy"
+    linkedin = "https://linkedin.com/in/aminroslan"
+    instagram = "https://instagram.com/taikomin"
+    twitter = "https://twitter.com/taikom1n"
+
+[taxonomies]
+  tag = "tags"
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  term = ["HTML"]
+  taxonomy = ["HTML"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+    tabWidth = 2
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5

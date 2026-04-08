@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Blueprint for Building Layouts with Grid System | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Grid system in UI design, Responsive web design, Building Grid component in React, Grid vs Flex in web development, Designing for multiple screen sizes, CSS grid layout, Web development tutorial, React component tutorial, UI design best practices, Consistent UI with grid system, Creating layout templates in React, Building responsive UI with grid system, Styled Components in React, Grid system for web developers and designers, Introduction to grid systems in UI design, Responsive design with Grid and React, Grid component for responsive web design, How to use grid systems for web design." />
+
+
+<meta property="og:title" content="Blueprint for Building Layouts with Grid System" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Blueprint for Building Layouts with Grid System" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Blueprint for Building Layouts with Grid System</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / June 8, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">11 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p>In the world of UI design and development, creating responsive layouts that adapt seamlessly to various screen sizes is <strong>crucial</strong>. One effective tool for achieving this is a <strong><a href="https://www.interaction-design.org/literature/article/the-grid-system-building-a-solid-design-layout">grid system.</a></strong> In this blog post, we will explore the importance of grid systems, discuss the perspectives of engineers and designers regarding grids, and demonstrate the process of building a React component for a page&rsquo;s layout using a grid system.</p>
+<h3 id="grid-system">Grid System</h3>
+<p>A grid system in the digital world is akin to a print layout in organizing elements on a page. It serves as a guide for designers, enabling them to create multiple layouts that support responsive themes for different screen sizes. By establishing a consistent grid structure, designers can align and position elements more efficiently, ensuring a visually appealing and harmonious user interface.</p>
+<h3 id="what-grid-is-for-web-developers-and-for-designers">What Grid is for web developers, and for designers</h3>
+<p>When it comes to grid systems, engineers and designers often have different perspectives. As an engineer, you might view grids as just another way of aligning contents. Perhaps you prefer using flex to achieve content alignment. On the other hand, designers perceive grid systems as essential guidelines in UI design, providing a framework for consistent layouts and proportions across different pages and sections.</p>
+<p>At Superside, I was tasked with building two components, a standalone generic Grid component, and a Grid component that aligns with our design&rsquo;s grid system. We decided to call this component <strong>Columns</strong> to separate itself from other Grid component that was built. This Columns component will serve as <strong>a blueprint for creating responsive layouts.</strong> By utilizing this component, we can easily create layout templates and ensure a consistent grid structure throughout our UI. Apart from the Grid component, this component needs to be:</p>
+<ul>
+<li><strong>Responsive</strong>. Able to change the columns layout at every viewport</li>
+<li><strong>Simple</strong>. No weird sugarcoats, clear and concise approach. Little to no props setup.</li>
+<li><strong>Short</strong>. Codes don’t go above 50 lines.</li>
+</ul>
+<h3 id="creating-a-grid-system-component">Creating a Grid System component</h3>
+<p>For this example, I will try to recreate the <strong>Columns</strong> component. However, <strong>I will leave out the responsiveness aspect</strong> and let it be at your discretion on how you would want to implement it.</p>
+<p>If you guys want the code, head on over to <a href="https://github.com/qwerqy/grid-system-component">this repo</a>.</p>
+<p>In this guide, I will be using the following stack for bootstrapping this project:</p>
+<ul>
+<li><strong>Typescript</strong></li>
+<li><strong>Create React App</strong></li>
+<li><strong>Styled Components</strong></li>
+</ul>
+<p>Start by creating a new file, let&rsquo;s call it <code>Grid.tsx</code>, and import the required dependencies:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"></code></pre></div><p>Define the types/interfaces needed for the <code>Grid</code> component. In this case, we have <code>Area</code> and <code>GridProps</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Area</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">start</span>: <span style="color:#66d9ef">number</span>[]
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">end</span>: <span style="color:#66d9ef">number</span>[]
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GridProps</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">PropsWithChildren</span><span style="color:#f92672">&lt;</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">gridArea?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">areas</span>: <span style="color:#66d9ef">Area</span>[]
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">columns?</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rows?</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">backgroundColor?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  }<span style="color:#f92672">&gt;</span> {}
+</span></span></code></pre></div><p>Type <code>Area</code> will be used for the <code>areas</code> type in <code>GridProps</code> as <code>Area[]</code> . <code>name</code> is the <code>grid-area</code> CSS property for each of the element that will live inside the component. <code>start</code> and <code>end</code> takes in an array of 2 numbers, where the first number is the column, and the second number is the row.</p>
+<p><code>GridProps</code> will be the prop type for the <code>Grid</code> component.</p>
+<p>Define the styled component <code>GridContainer</code> using the <code>styled</code> function from <code>styled-components</code>. This component will be responsible for rendering the grid container:</p>
+<p><code>GridContainer</code> will accept <code>GridProps</code> as its props for setting the value of</p>
+<ul>
+<li><code>grid-template-columns</code></li>
+<li><code>grid-template-rows</code></li>
+<li><code>grid-template-areas</code></li>
+<li><code>grid-area</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">GridContainer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span>&lt;<span style="color:#f92672">GridProps</span>&gt;<span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  display: grid;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-column-gap: 12px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-columns: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">columns</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; `</span><span style="color:#a6e22e">repeat</span>(<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">columns</span>}, <span style="color:#ae81ff">1</span><span style="color:#a6e22e">fr</span>)<span style="color:#e6db74">`};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-rows: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">rows</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; `</span><span style="color:#a6e22e">repeat</span>(<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">rows</span>}, <span style="color:#ae81ff">1</span><span style="color:#a6e22e">fr</span>)<span style="color:#e6db74">`};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-areas: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">generateGridTemplateAreas</span>(<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">areas</span>, <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">columns</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-area: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">gridArea</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; gridArea};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: 100%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  width: 100%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">backgroundColor</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><p>Optionally, for this guide, I included <code>background-color</code> just to visually separate the components that will be built.</p>
+<p>Create a helper function <code>generateGridTemplateAreas</code> that takes in the <code>areas</code>, <code>rows</code>, and <code>columns</code> as parameters and generates the <code>grid-template-areas</code> string:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">generateGridTemplateAreas</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">areas</span>: <span style="color:#66d9ef">Area</span>[],
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">rows?</span>: <span style="color:#66d9ef">number</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">columns?</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">gridTemplateAreasArray</span>: <span style="color:#66d9ef">string</span>[][] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">rows</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">columns</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initialize gridTemplateAreasArray with array of &#34;.&#34;
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">rows</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">columns</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Assign area names to corresponding grid cells
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">areas</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">area</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">start</span>, <span style="color:#a6e22e">end</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">area</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">startColumn</span>, <span style="color:#a6e22e">startRow</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">start</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">endColumn</span>, <span style="color:#a6e22e">endRow</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">row</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">startRow</span>; <span style="color:#a6e22e">row</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">endRow</span>; <span style="color:#a6e22e">row</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">col</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">startColumn</span>; <span style="color:#a6e22e">col</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">endColumn</span>; <span style="color:#a6e22e">col</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">row</span>][<span style="color:#a6e22e">col</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Convert gridTemplateAreasArray to a string
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">gridTemplateAreasArray</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">row</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">`&#34;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34; &#34;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;`</span>).<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;\n&#34;</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>generateGridTemplateAreas</code> will be responsible in creating the value for the CSS property <code>grid-template-areas</code>. Read more about <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas">grid-template-areas</a> and see why it is so powerful.</p>
+<p>That is about it to bootstrap this component. In the end, your file will look like this:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Area</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">start</span>: <span style="color:#66d9ef">number</span>[];
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">end</span>: <span style="color:#66d9ef">number</span>[];
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GridProps</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">PropsWithChildren</span><span style="color:#f92672">&lt;</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">gridArea?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">areas</span>: <span style="color:#66d9ef">Area</span>[];
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">columns?</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rows?</span>: <span style="color:#66d9ef">number</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">backgroundColor?</span>: <span style="color:#66d9ef">string</span>;
+</span></span><span style="display:flex;"><span>  }<span style="color:#f92672">&gt;</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">GridContainer</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span>&lt;<span style="color:#f92672">GridProps</span>&gt;<span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  display: grid;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-column-gap: 12px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-columns: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">columns</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; `</span><span style="color:#a6e22e">repeat</span>(<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">columns</span>}, <span style="color:#ae81ff">1</span><span style="color:#a6e22e">fr</span>)<span style="color:#e6db74">`};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-rows: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">rows</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; `</span><span style="color:#a6e22e">repeat</span>(<span style="color:#a6e22e">$</span>{<span style="color:#a6e22e">rows</span>}, <span style="color:#ae81ff">1</span><span style="color:#a6e22e">fr</span>)<span style="color:#e6db74">`};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-template-areas: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">generateGridTemplateAreas</span>(<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">areas</span>, <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">columns</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-area: </span><span style="color:#e6db74">${</span>({ <span style="color:#a6e22e">gridArea</span> <span style="color:#e6db74">}</span><span style="color:#e6db74">) =&gt; gridArea};
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: 100%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  width: 100%;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">backgroundColor</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">generateGridTemplateAreas</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">areas</span>: <span style="color:#66d9ef">Area</span>[],
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">rows?</span>: <span style="color:#66d9ef">number</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">columns?</span>: <span style="color:#66d9ef">number</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> <span style="color:#66d9ef">string</span> <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">gridTemplateAreasArray</span>: <span style="color:#66d9ef">string</span>[][] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">rows</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">columns</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Initialize gridTemplateAreasArray with array of &#34;.&#34;
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">rows</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">i</span>] <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">columns</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">i</span>][<span style="color:#a6e22e">j</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;.&#34;</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Assign area names to corresponding grid cells
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">areas</span>.<span style="color:#a6e22e">forEach</span>((<span style="color:#a6e22e">area</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> { <span style="color:#a6e22e">name</span>, <span style="color:#a6e22e">start</span>, <span style="color:#a6e22e">end</span> } <span style="color:#f92672">=</span> <span style="color:#a6e22e">area</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">startColumn</span>, <span style="color:#a6e22e">startRow</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">start</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">endColumn</span>, <span style="color:#a6e22e">endRow</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">end</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">row</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">startRow</span>; <span style="color:#a6e22e">row</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">endRow</span>; <span style="color:#a6e22e">row</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">let</span> <span style="color:#a6e22e">col</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">startColumn</span>; <span style="color:#a6e22e">col</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">endColumn</span>; <span style="color:#a6e22e">col</span><span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">gridTemplateAreasArray</span>[<span style="color:#a6e22e">row</span>][<span style="color:#a6e22e">col</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Convert gridTemplateAreasArray to a string
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">gridTemplateAreasArray</span>.<span style="color:#a6e22e">map</span>((<span style="color:#a6e22e">row</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">`&#34;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">row</span>.<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34; &#34;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;`</span>).<span style="color:#a6e22e">join</span>(<span style="color:#e6db74">&#34;\n&#34;</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Grid</span>: <span style="color:#66d9ef">React.FC</span>&lt;<span style="color:#f92672">GridProps</span>&gt; <span style="color:#f92672">=</span> ({ <span style="color:#a6e22e">children</span>, ...<span style="color:#a6e22e">props</span> }) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">GridContainer</span> {<span style="color:#a6e22e">...props</span>}&gt;
+</span></span><span style="display:flex;"><span>        {<span style="color:#a6e22e">children</span>}
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">GridContainer</span>&gt;
+</span></span><span style="display:flex;"><span>  );
+</span></span></code></pre></div><p>And there, you have the basic implementation of <code>Grid</code> component.</p>
+<p>Next, we want to be able to <strong>automatically set the columns and rows of the component.</strong> The idea is, <strong>if the component is the parent</strong>, get the columns and rows value, <strong>else if the component is a child of a Grid component</strong>, calculate the columns and rows of the component based on the number of columns and rows assigned to it. This way, you only need to worry about setting the columns and rows on the parent <code>Grid</code>.</p>
+<p>Create a context object <code>GridContext</code> using <code>createContext</code> from React. This context will be used to provide values to nested <code>Grid</code> components:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">GridContext</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">createContext</span> <span style="color:#f92672">&lt;</span> <span style="color:#a6e22e">GridContextType</span>) <span style="color:#f92672">|</span> (<span style="color:#66d9ef">null</span> <span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">null</span>)
+</span></span></code></pre></div><p>Define the <code>Grid</code> component using the <code>React.FC</code> type. Inside the component, destructure the required props and initialize the <code>parentCtx</code> and <code>parentColsRows</code> variables using the <code>useContext</code> hook:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Grid</span>: <span style="color:#66d9ef">React.FC</span>&lt;<span style="color:#f92672">GridProps</span>&gt; <span style="color:#f92672">=</span> ({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">areas</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">initialColumns</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">initialRows</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">children</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gridArea</span>
+</span></span><span style="display:flex;"><span>}) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">parentCtx</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">useContext</span>(<span style="color:#a6e22e">GridContext</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">parentColsRows</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">parentCtx</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">getColumnsAndRows</span>(<span style="color:#a6e22e">gridArea</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Rest of the component implementation
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Create the <code>calculateAreaColumnsAndRows</code> function inside the <code>Grid</code> component. This function takes an optional <code>areaName</code> parameter and calculates the number of columns and rows for that specific area:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">calculateAreaColumnsAndRows</span> <span style="color:#f92672">=</span> (
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">areaName?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>)<span style="color:#f92672">:</span> { <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">number</span>; <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">number</span> } <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">areaName</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">area</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">areas</span>.<span style="color:#a6e22e">find</span>((<span style="color:#a6e22e">a</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">areaName</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">area</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">areaColumns</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">area</span>.<span style="color:#a6e22e">end</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">area</span>.<span style="color:#a6e22e">start</span>[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">areaRows</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">area</span>.<span style="color:#a6e22e">end</span>[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> <span style="color:#a6e22e">area</span>.<span style="color:#a6e22e">start</span>[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">Math.min</span>(<span style="color:#a6e22e">areaColumns</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">Math.min</span>(<span style="color:#a6e22e">areaRows</span>)
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">initialColumns</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">initialRows</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">initialColumns</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">initialRows</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><em>I have it implemented inside the component. If you like to be outside of the component, then you can adjust the function to accept additional params.</em></p>
+<p>Define the <code>contextValue</code> object that will be passed to the <code>GridContext.Provider</code> component. It includes the <code>areas</code> and <code>getColumnsAndRows</code> function, which returns the calculated columns and rows based on the provided <code>gridArea</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">contextValue</span>: <span style="color:#66d9ef">GridContextType</span> <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">areas</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">getColumnsAndRows</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">gridArea?</span>: <span style="color:#66d9ef">string</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">gridArea</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">calculateAreaColumnsAndRows</span>(<span style="color:#a6e22e">gridArea</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">columns</span>: <span style="color:#66d9ef">initialColumns</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">rows</span>: <span style="color:#66d9ef">initialRows</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Finally, render the <code>GridContainer</code> component wrapped inside the <code>GridContext.Provider</code>. Pass the required props to the <code>GridContainer</code> component and render the <code>children</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">GridContext.Provider</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">contextValue</span>}&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">GridContainer</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">columns</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">parentColsRows</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">columns</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">initialColumns</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">rows</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">parentColsRows</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">rows</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">initialRows</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">areas</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">areas</span>}
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">gridArea</span>}
+</span></span><span style="display:flex;"><span>    &gt;
+</span></span><span style="display:flex;"><span>      {<span style="color:#a6e22e">children</span>}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">GridContainer</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">GridContext.Provider</span>&gt;
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Pass the <code>contextValue</code> as a value for the provider. Values for <code>columns</code> and <code>rows</code> should come from the context of its current parent. If said parent does not exist (that component IS the parent), then pass the initial values.</p>
+<p>Finally, export the <code>Grid</code> component.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> { <span style="color:#a6e22e">Grid</span> }
+</span></span></code></pre></div><p>Once that is created, the component can be used as such:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This is how you will need to setup the areas
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">areas</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;header&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">0</span>] },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;sidebar&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>] },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;content&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">11</span>] },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;footer&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">11</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">11</span>] }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">innerAreas</span> <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;content1&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">11</span>] },
+</span></span><span style="display:flex;"><span>  { <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;content2&#34;</span>, <span style="color:#a6e22e">start</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">end</span><span style="color:#f92672">:</span> [<span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">11</span>] }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">App</span>: <span style="color:#66d9ef">React.FC</span> <span style="color:#f92672">=</span> () <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">Wrapper</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Canvas</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;<span style="color:#f92672">Grid</span> <span style="color:#a6e22e">areas</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">areas</span>} <span style="color:#a6e22e">columns</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">12</span>} <span style="color:#a6e22e">rows</span><span style="color:#f92672">=</span>{<span style="color:#ae81ff">12</span>}&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;header&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#FFC9B5&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Header</span>
+</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;content&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#DDE1E4&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">Grid</span> <span style="color:#a6e22e">areas</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">innerAreas</span>}&gt;
+</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;content1&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#D8AA96&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">Content</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>              &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;content2&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#807182&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>                <span style="color:#a6e22e">Inner</span> <span style="color:#a6e22e">Sidebar</span>
+</span></span><span style="display:flex;"><span>              &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#f92672">Grid</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;sidebar&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#F7B1AB&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Sidebar</span>
+</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">Cell</span> <span style="color:#a6e22e">gridArea</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;footer&#34;</span>} <span style="color:#a6e22e">backgroundColor</span><span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;#FFC9B5&#34;</span>}&gt;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Footer</span>
+</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">Cell</span>&gt;
+</span></span><span style="display:flex;"><span>        &lt;/<span style="color:#f92672">Grid</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;/<span style="color:#f92672">Canvas</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">Wrapper</span>&gt;
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">App</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Wrapper</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  display: flex;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  justify-content: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  align-items: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  width: 100vw;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: 100vh;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: #fff8f0;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Canvas</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: 600px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  width: 800px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  border-radius: 8px;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Cell</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span><span style="color:#f92672">&lt;</span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gridArea?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">backgroundColor?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">height?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#f92672">&gt;</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">backgroundColor</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-area: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">gridArea</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">height</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  display: flex;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  justify-content: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  align-items: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><p>Since I am using CRA and for the purpose of this guide, I just directly import it to <code>App.tsx</code> . I also created some styled elements to tidy things up.</p>
+<p>One more thing to note, take a look at <code>Cell</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Cell</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">styled</span>.<span style="color:#a6e22e">div</span><span style="color:#f92672">&lt;</span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">gridArea?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">backgroundColor?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">height?</span>: <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}<span style="color:#f92672">&gt;</span><span style="color:#e6db74">`
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  background-color: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">backgroundColor</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  grid-area: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">gridArea</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  height: </span><span style="color:#e6db74">${</span>(<span style="color:#a6e22e">props</span>) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">height</span><span style="color:#e6db74">}</span><span style="color:#e6db74">;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  display: flex;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  justify-content: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  align-items: center;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">`</span>
+</span></span></code></pre></div><p>For this guide, <code>Cell</code> component will be considered as <strong>direct elements that will be bent around by <code>Grid</code> component.</strong> You can use any other elements as you like, most importantly is to <strong>make sure that <code>grid-area</code> CSS property is included</strong>.</p>
+<p>So lets spin this up in <a href="http://localhost">localhost</a> and see how it looks like:</p>
+<p><img src="https://i.imgur.com/ZuNBKfR.png" alt="grid-system"></p>
+<p><em>Perfecto!</em> There you have it, a working autonomous Grid component. For gap, I set it to <code>12px</code> and as you can see, even if the Grid component is nested inside, it still respects the gap property.</p>
+<p>For that, we have managed achieved the following spec:</p>
+<ul>
+<li><strong>Simple</strong>. Configurations only applied at the high level parent grid.</li>
+<li><strong>Short</strong>. Code output is less than 50 lines. (Technically, 76 lines on the <code>App.tsx</code> but that is because I place everything else inside for this guide.)</li>
+</ul>
+<p>What we did not achieve is responsiveness. I did not want to keep this guide very long, so I guess that is up to you guys to figure out. 😜</p>
+<h3 id="grid-system-vs-flex">Grid system vs Flex</h3>
+<p>Let’s take a look at the differences of using grid-based components versus flex. The key difference between the two approaches lies in their underlying mechanisms and the level of control they offer.</p>
+<p>The Grid System component allows for a more structured and grid-based approach to layout creation. It enforces consistent alignment and spacing by defining specific grid areas and gaps. This is especially useful when you have strict grid requirements and need to maintain a cohesive grid system across your UI.</p>
+<p>On the other hand, Flex provides a more flexible approach to layout design. It allows for fluid and dynamic arrangements of elements, primarily focusing on content alignment and distribution within a container. Flex is great for simpler layouts or when you need more adaptability in element positioning.</p>
+<p>In summary, the Grid System component offers precise control over grid-based layouts, ensuring adherence to specific guidelines, while Flex provides more flexibility in arranging elements. Your choice between the two would depend on the complexity of your layout, the need for a strict grid structure, and the level of control you desire in your UI design.</p>
+<h3 id="when-to-use-the-grid-system-component">When to use the Grid System component</h3>
+<p>The grid system component is particularly useful in scenarios where you need to create layout templates or maintain a grid system with strict gaps. It provides a solid foundation for your UI, ensuring that elements align consistently and maintain their shape across different screen sizes. By using this component, <strong>you can design responsive layouts with ease and precision</strong>.</p>
+<p>While flex can be a powerful tool for content alignment, a grid system component offers <strong>distinct advantages</strong> when it comes to <strong>creating responsive layouts that adhere to specific grid guidelines</strong>. Think of it as a <strong>blueprint</strong> that maintains its shape, unaffected by the placement of content blocks. By embracing a grid system, designers and developers can work together harmoniously to build visually appealing and responsive user interfaces.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fblueprint-for-building-layouts-with-grid-system%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

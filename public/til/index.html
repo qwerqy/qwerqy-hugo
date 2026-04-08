@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Today I Learn | Amin Roslan</title>
+<meta name="description" content="Here you can find what I have learned as I go about my day." />
+<meta name="author" content="Amin Roslan" />
+
+
+
+<meta property="og:title" content="Today I Learn" />
+<meta property="og:description" content="Here you can find what I have learned as I go about my day." />
+<meta property="og:url" content="http://localhost:1313/til/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Today I Learn" />
+<meta name="twitter:description" content="Here you can find what I have learned as I go about my day." />
+
+
+<link rel="canonical" href="http://localhost:1313/til/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+<link rel="alternate" type="application/rss&#43;xml" href="http://localhost:1313/til/index.xml" title="Amin Roslan" />
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors ">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors text-zinc-100">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<section class="py-8">
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-2">Today I Learn</h1>
+  
+  <p class="text-zinc-400 mb-8 leading-relaxed">Here you can find what I have learned as I go about my day.</p>
+  
+
+  
+  <div class="space-y-6">
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/javascript-asynchronous-precendence/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">Javascript Asynchronous Precendence.</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Feb 20, 2025</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">javascript</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">Deep...</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><p>What would the output of the following function be?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">3</span>), <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>) =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#ae81ff">2</span>)).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">val</span>) =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">val</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>console.log(1)</code> runs first, <code>Promise</code> goes second and lastly <code>setTimeout</code>. This is because JavaScript has different types of queues for handling asynchronous operations:</p>
+<ol>
+<li><strong>Call Stack</strong>: Executes synchronous code immediately (<code>console.log(1)</code>)</li>
+<li><strong>Microtask Queue</strong>: Handles Promises and process.nextTick(), has higher priority</li>
+<li><strong>Macrotask Queue</strong>: Handles setTimeout, setInterval, and I/O operations</li>
+</ol>
+<p>Even though both <code>setTimeout</code> and <code>Promise</code> are asynchronous operations, Promises are processed in the microtask queue which is processed immediately after the call stack is empty, while <code>setTimeout</code> callbacks go into the macrotask queue which is processed later.</p>
+<p>This execution order is part of the JavaScript Event Loop:</p>
+<ol>
+<li>Execute all synchronous code</li>
+<li>Process all microtasks (Promises)</li>
+<li>Process one macrotask (setTimeout)</li>
+<li>Repeat steps 2-3</li>
+</ol>
+<p>So the output will be:</p>
+<pre tabindex="0"><code>1
+2
+3
+</code></pre></div>
+    </article>
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/how-ssr-works/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">How SSR Works in React</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Feb 20, 2025</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">react</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">No way...</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><p>Server-Side Rendering (SSR) is when React components are rendered to HTML on the server before being sent to the client. Here&rsquo;s the flow:</p>
+<ol>
+<li>
+<p><strong>Server Receives Request</strong></p>
+<ul>
+<li>User requests a page</li>
+<li>Server runs React code</li>
+</ul>
+</li>
+<li>
+<p><strong>Server Renders React</strong></p>
+<ul>
+<li>React components are rendered to HTML strings</li>
+<li>Initial state is serialized</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-jsx" data-lang="jsx"><span style="display:flex;"><span><span style="color:#75715e">// Example server code
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">html</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">ReactDOMServer</span>.<span style="color:#a6e22e">renderToString</span>(&lt;<span style="color:#f92672">App</span> /&gt;)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">initialState</span>)
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Server Sends Response</strong></p>
+<ul>
+<li>HTML is sent to browser</li>
+<li>Initial state is included in a script tag</li>
+<li>React client bundle is included</li>
+</ul>
+</li>
+<li>
+<p><strong>Client Hydration</strong></p>
+<ul>
+<li>Browser loads React</li>
+<li>React &ldquo;hydrates&rdquo; the HTML by attaching event listeners</li>
+<li>App becomes interactive without re-rendering</li>
+</ul>
+</li>
+</ol>
+<p>Benefits:</p>
+<ul>
+<li>Faster initial page load</li>
+<li>Better SEO (search engines see complete HTML)</li>
+<li>Better performance on slow devices</li>
+</ul>
+<p>This is called &ldquo;isomorphic&rdquo; or &ldquo;universal&rdquo; rendering because the same React code runs on both server and client.</p>
+</div>
+    </article>
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/defer-vs-eof-go/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">Defer vs EOF calls in Go</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Feb 20, 2025</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">go</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">Edgey casey!</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><h2 id="key-differences">Key Differences:</h2>
+<ol>
+<li><strong>Execution Order</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">deferExample</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;1&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;2&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;3&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Output: 3, 2, 1 (LIFO - Last In First Out)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">normalExample</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;1&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;2&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;3&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Output: 1, 2, 3 (Sequential)</span>
+</span></span></code></pre></div><ol start="2">
+<li><strong>Error Handling</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">withDefer</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;file.txt&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#75715e">// file will never be closed</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Close</span>() <span style="color:#75715e">// guaranteed to run even if error occurs later</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ... work with file</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">withoutDefer</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;file.txt&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#75715e">// file will never be closed</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ... work with file</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Close</span>() <span style="color:#75715e">// might not be reached if panic or early return occurs</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ol start="3">
+<li><strong>Early Returns</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">withDefer</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;cleanup&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#75715e">// cleanup still runs</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ... more code</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">withoutDefer</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">x</span> &lt; <span style="color:#ae81ff">0</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;cleanup&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#75715e">// need to duplicate cleanup code</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ... more code</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;cleanup&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Key advantages of <code>defer</code>:</p>
+<ul>
+<li>Guaranteed execution (even during panics)</li>
+<li>Cleanup code stays close to resource acquisition</li>
+<li>Handles multiple return points elegantly</li>
+<li>Perfect for cleanup operations (closing files, mutexes, etc.)</li>
+</ul>
+<p>When to use each:</p>
+<ul>
+<li>Use <code>defer</code> for cleanup operations and guaranteed execution</li>
+<li>Use end-of-function calls for sequential operations where order matters</li>
+</ul>
+</div>
+    </article>
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/encode-google-service-account-base64/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">Encode Google Service Account to Base64</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Jan 8, 2025</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">env</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">Useful for long/json values</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><p>Example Google service account JSON:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;service_account&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;project_id&#34;</span>: <span style="color:#e6db74">&#34;test_project&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;private_key_id&#34;</span>: <span style="color:#e6db74">&#34;abc123&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;private_key&#34;</span>: <span style="color:#e6db74">&#34;-----BEGIN PRIVATE KEY-----\nblahblah\n-----END PRIVATE KEY-----\n&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;client_email&#34;</span>: <span style="color:#e6db74">&#34;api@test_project.iam.gserviceaccount.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;client_id&#34;</span>: <span style="color:#e6db74">&#34;107309273795607181234&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;auth_uri&#34;</span>: <span style="color:#e6db74">&#34;https://accounts.google.com/o/oauth2/auth&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;token_uri&#34;</span>: <span style="color:#e6db74">&#34;https://oauth2.googleapis.com/token&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;auth_provider_x509_cert_url&#34;</span>: <span style="color:#e6db74">&#34;https://www.googleapis.com/oauth2/v1/certs&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;client_x509_cert_url&#34;</span>: <span style="color:#e6db74">&#34;https://www.googleapis.com/robot/v1/metadata/x509/api%40test_project.iam.gserviceaccount.com&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;universe_domain&#34;</span>: <span style="color:#e6db74">&#34;googleapis.com&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Encode the file to base64. <a href="https://www.base64encode.org/">Base64 Encoder</a></p>
+<p>Place the base64 string as an environment variable</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-env" data-lang="env"><span style="display:flex;"><span>GSA_BASE64<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAidGVzdF9wcm9qZWN0IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiYWJjMTIzIiwKICAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG5ibGFoYmxhaFxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwKICAiY2xpZW50X2VtYWlsIjogImFwaUB0ZXN0X3Byb2plY3QuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJjbGllbnRfaWQiOiAiMTA3MzA5MjczNzk1NjA3MTgxMjM0IiwKICAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLAogICJ0b2tlbl91cmkiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLAogICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwKICAiY2xpZW50X3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vcm9ib3QvdjEvbWV0YWRhdGEveDUwOS9hcGklNDB0ZXN0X3Byb2plY3QuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJ1bml2ZXJzZV9kb21haW4iOiAiZ29vZ2xlYXBpcy5jb20iCn0=&#34;</span>
+</span></span></code></pre></div><p>Decode and parse the JSON when asked for credential</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">credentials</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Buffer</span>.<span style="color:#a6e22e">from</span>(<span style="color:#a6e22e">process</span>.<span style="color:#a6e22e">env</span>.<span style="color:#a6e22e">GSA_BASE64</span>, <span style="color:#e6db74">&#34;base64&#34;</span>).<span style="color:#a6e22e">toString</span>(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Google Sheets API setup
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">auth</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">google</span>.<span style="color:#a6e22e">auth</span>.<span style="color:#a6e22e">GoogleAuth</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">credentials</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">scopes</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#34;https://www.googleapis.com/auth/spreadsheets&#34;</span>]
+</span></span><span style="display:flex;"><span>})
+</span></span></code></pre></div></div>
+    </article>
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/usememo-and-usecallback-skips-rerender/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">useMemo &amp; useCallback skips re-render</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Dec 7, 2024</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">typescript</span>
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">react</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">Use only when necessary</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><p>The <code>useMemo</code> and <code>useCallback</code> hooks in React help optimize performance by preventing unnecessary re-renders.
+<code>useMemo</code> memoizes the result of a computation, ensuring the value is only recalculated when its dependencies change.
+<code>useCallback</code> memoizes a function reference, preventing child components from re-rendering when the function is passed as a prop unless its dependencies change.
+Together, they help minimize redundant rendering, especially in components with heavy computations or deep prop trees.</p>
+</div>
+    </article>
+    
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="http://localhost:1313/til/what-happens-when-rebase/" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">What happens when rebasing.</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">Oct 22, 2024</span>
+      </div>
+      
+      <div class="flex flex-wrap gap-1 mb-3">
+        
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">git</span>
+        
+      </div>
+      
+      
+      <p class="text-xs text-zinc-500 italic mb-2">Good for solo MR, sort of bad with team without communication</p>
+      
+      <div class="prose prose-sm max-w-none text-sm"><p>When rebasing MyBranch onto master, &ldquo;incoming&rdquo; refers to MyBranch (the branch being replayed), and &ldquo;current&rdquo; is master. Rebase resets MyBranch to master, replays its commits, and temporarily considers master as &ldquo;current.&rdquo; After rebasing, MyBranch becomes &ldquo;current&rdquo; again. This differs from merging, where &ldquo;incoming&rdquo; is the branch being merged, and &ldquo;current&rdquo; remains your branch.</p>
+</div>
+    </article>
+    
+  </div>
+
+  
+</section>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

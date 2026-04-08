@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management) | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Server Side Rendering, SSR, React, Middleware, Koa, Mobx, State Management, CRA Configs, Webpack, Bootstrap File, React App Rewired, StaticRouter, React Router Dom, RenderToString, ReactDOM Server, Node.js, Production React App, renderer.js, Babel Register, Koa-router, ReactDOM.hydrate, serverRenderer, HTML Generation, npm Run Build, package.json, SSR App, getInitialProps(), Provider Component, window.INITIAL_STATE, app.store.tsx, Plugins for SSR." />
+
+
+<meta property="og:title" content="Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management)" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management)" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management)</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / February 20, 2019</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">10 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <Callout emoji="💡">
+  This page's structure has been updated on June 2023
+</Callout>
+<p>Hello guys, welcome back! This is part 2 of the guide series on how to implement SSR to your ongoing production React product.</p>
+<h2 id="recap">Recap</h2>
+<p>So in part 1 of the guide series, I showed you how I prepared the bootstrap file that will be the entry script to run our project, and by using react-app-rewired how we can override the current CRA configs to enable some Webpack configs to work with SSR.</p>
+<p>I will be breaking this guide into 3 parts. Follow me on <a href="https://twitter.com/qwerqy_dev" title="Twitter">Twitter</a> to get notified when the next part will come out:</p>
+<ol>
+<li><a href="https://aminroslan.com/posts/ssr-to-an-ongoing-production-react-product-part-1" title="Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)">Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)</a></li>
+<li>Implementing SSR to a production React (CRA) product (Part 2: Creating a middleware to render &amp; SSR Enabled State Management Setup)</li>
+<li>Implementing SSR to a production React (CRA) product (Part 3: Finalizing the project) (Coming Soon)</li>
+</ol>
+<p>In this part, I will be sharing with you 2 things:</p>
+<ol>
+<li>Creating a middleware that will start the process of SSR.</li>
+<li>State Management Setup, in this guide, we&rsquo;ll be using <a href="https://mobx.js.org/" title="Mobx">Mobx</a> as our state management framework.</li>
+</ol>
+<h2 id="renderer-middleware">Renderer Middleware</h2>
+<p>Let&rsquo;s start off with creating a middleware that will be responsible for rendering all of our client-side code on the server side. Create a file called <code>renderer.js</code> and place it in your <code>middleware</code> folder.</p>
+<p>Let&rsquo;s create an empty module to start off with, since the project uses Koa for its backend, we&rsquo;ll mostly be using ctx.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// import our main Routes component. The main file for the project is routes.tsx
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#34;path&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fs</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#34;fs&#34;</span>).<span style="color:#a6e22e">promises</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This is the module that will be responsible for most of the rendering.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">ctx</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filePath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;build&#34;</span>, <span style="color:#e6db74">&#34;index.html&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">html</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">filePath</span>, <span style="color:#e6db74">&#34;utf8&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">component</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">component</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">renderToString</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">StaticRouter</span> <span style="color:#a6e22e">location</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>} <span style="color:#a6e22e">context</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">context</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Routes</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/StaticRouter&gt;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If something goes wrong with the component markup, this will light up.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Component Error: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">stack</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">html</span>
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">replace</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;&lt;/head&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">`&lt;script&gt;window.__INITIAL_STATE__ = </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">dehydratedStore</span><span style="color:#e6db74">}</span><span style="color:#e6db74">; &lt;/script&gt;&lt;/head&gt;`</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">&#39;&lt;div id=&#34;root&#34;&gt;&lt;/div&gt;&#39;</span>, <span style="color:#e6db74">`&lt;div id=&#34;root&#34;&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">component</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/div&gt;`</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Okay, after cutting down most of the codes in this file, I manage to get the actual starting point from where I started when I was working on this project. We have a typical reusable middleware, let&rsquo;s go one by one on the stuff:</p>
+<p>We use Node&rsquo;s built-in modules, fs and path (In this case, I am using an experimental module from fs which is async),  and get the HTML that is generated when we run the build script.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filePath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;build&#34;</span>, <span style="color:#e6db74">&#34;index.html&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">html</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">filePath</span>, <span style="color:#e6db74">&#34;utf8&#34;</span>)
+</span></span></code></pre></div><p>Resolve the path to <code>build/index.html</code> . If you don&rsquo;t see an index.html file in the build folder, run<code> npm run build </code>to generate it.</p>
+<p>Secondly, we import StaticRendering from react-router-dom and renderToString from react-dom/server to be used in our HTML we create a component variable that consists of these following modules. We create it as such:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filePath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;build&#34;</span>, <span style="color:#e6db74">&#34;index.html&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">html</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">filePath</span>, <span style="color:#e6db74">&#34;utf8&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> <span style="color:#a6e22e">component</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">component</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">renderToString</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">StaticRouter</span> <span style="color:#a6e22e">location</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>} <span style="color:#a6e22e">context</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">context</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Routes</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/StaticRouter&gt;</span>
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// If something goes wrong with the component markup, this will light up.
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Component Error: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">stack</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Based on the documentation from React Router, to enable rendering in server side, we use StaticRouter to render our routed components in the client-side to static lines of codes, this enables the project to render any pages inside of our Router component to static when we go from page to page. There are two props needed, location and context. put in <code>ctx.request.url </code>or <code>ctx.url</code> into the location prop, and context as an empty object. This will be populated later when we actually use the renderer. Nested within the StaticRouter component will be the root file of our client-side app, in this case, is the Routes component. In your case, it can be App.js or usually, it&rsquo;s Index.js in most boilerplate CRA 2.0 app.</p>
+<p>I place the logic inside of a <code>try...catch</code> function so that I can catch any errors related to SSR. This is really useful when you&rsquo;re in development. Once you have stabilized the renderer file, you can either remove it or just leave it as is in case you want to develop more stuff in it.</p>
+<ul>
+<li>Next, we&rsquo;ll send back a response body with the component and the HTML file.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">html</span>.<span style="color:#a6e22e">replace</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#39;&lt;div id=&#34;root&#34;&gt;&lt;/div&gt;&#39;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">`&lt;div id=&#34;root&#34;&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">component</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/div&gt;`</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>I use the <code>.replace</code> method which will add the component to the location I want. In this case, it&rsquo;s the div element with id <code>root</code>.</p>
+<p>Next, we&rsquo;ll go and add the middleware function into our controllers. I like to keep things neat, so in this project, I created separate folders for all the controllers needed in the server. Let&rsquo;s create the Index Controller and use it in our main server file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">router</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Router</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">serverRenderer</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#a6e22e">router</span>
+</span></span></code></pre></div><p>Then in our server file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">serve</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#34;koa-static&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">koa</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Koa</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">router</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Router</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//....
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Root static page.
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">koa</span>.<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">indexController</span>.<span style="color:#a6e22e">routes</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Public Controllers
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">koa</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//... your other controllers
+</span></span></span><span style="display:flex;"><span>  <span style="color:#75715e">// This is the static middleware.
+</span></span></span><span style="display:flex;"><span>  .<span style="color:#a6e22e">use</span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">serve</span>(<span style="color:#e6db74">&#34;build&#34;</span>, {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">hidden</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Renders other routes for SSR
+</span></span></span><span style="display:flex;"><span><span style="color:#a6e22e">koa</span>.<span style="color:#a6e22e">use</span>(<span style="color:#a6e22e">serverRenderer</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// This is where your server listens to port..
+</span></span></span></code></pre></div><p>Make sure you are following this order when you are customizing your server file. Since Koa goes from top to bottom, it&rsquo;s important to have them in the correct position to reduce the errors that&rsquo;ll show later on as we progress.</p>
+<p>Next, let&rsquo;s head over to the client-side and modify our entry file, in this project, it&rsquo;s in <code>src/``index.tsx</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#75715e">// src/index.tsx
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...declare imports
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">hydrate</span>(
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Router</span> <span style="color:#a6e22e">history</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">history</span>}&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">Routes</span> /&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">Router</span>&gt;,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">root</span>
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Nothing much to change here, just change your <code>ReactDOM.render</code>to<code>ReactDOM.hydrate</code>. This enables the client-side to take over the server-rendered static page once all of our JS files are loaded and set.</p>
+<p>Lastly, before you start running your app, go to your<code> package.json</code> and add/modify the script you have that starts the server</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#e6db74">&#34;scripts&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;build&#34;</span>: <span style="color:#e6db74">&#34;react-app-rewired build&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;start&#34;</span>: <span style="color:#e6db74">&#34;node server/bootstrap.js&#34;</span>  <span style="color:#75715e">//depending on where you put your bootstrap file, in this case i have it in my server folder.
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>That is basically how I&rsquo;ve set up the project that enables SSR. However, once you start your project, you are bound to get errors, so you can start debugging from there on, but believe me, once you&rsquo;ve done debugging, you will understand more on how it all actually works.</p>
+<p>Now, run <code>npm run build &amp;&amp; npm run start</code> and see how it goes! If all goes well, you should start seeing your server listening to a port. Go to localhost:<code>&lt;PORT&gt;</code> and check your SSR app out!</p>
+<p>If all works, great job! You&rsquo;ve successfully integrated SSR into your project. However, it is not the end for me, since this project is quite big, it has to have a state management framework that runs above all, assuming you already have Mobx (or any other state management framework setup on the client-side), in the next step, I won&rsquo;t be showing you how to set it up from scratch, but on just how to enable it to work on the server-side.</p>
+<h2 id="state-management-on-the-server-side">State Management on the Server-Side</h2>
+<p>In this project, we are using Mobx as the state management framework. If you are not using Mobx as the state management framework, don&rsquo;t worry as we won&rsquo;t get into much detail on it. Regardless, they all bear the same logic, to have a global state stored somewhere in the HOC.</p>
+<p>In Next.js, they have something called getInitialProps() where you can initialise the needed props before the client-side components hydrate in. This can include things like fetch, declaring new props and so on. In the next step, I will be doing the same thing, but better and modular.</p>
+<p>In your renderer.js file, declare your Store and link it with a Provider component.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">async</span> (<span style="color:#a6e22e">ctx</span>) =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Initialize mobx store. Store will refresh everytime you jump
+</span></span></span><span style="display:flex;"><span>  <span style="color:#75715e">// onto a new page or refreshing a page.
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AppStore</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Makes mobx work with SSR
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">useStaticRendering</span>(<span style="color:#66d9ef">true</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">filePath</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;build&#34;</span>, <span style="color:#e6db74">&#34;index.html&#34;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">html</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">fs</span>.<span style="color:#a6e22e">readFile</span>(<span style="color:#a6e22e">filePath</span>, <span style="color:#e6db74">&#34;utf8&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ....
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Dehydrate MobX store to be passed into client.
+</span></span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dehydratedStore</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">toJS</span>(<span style="color:#a6e22e">store</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">context</span> <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">component</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">component</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">renderToString</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">StaticRouter</span> <span style="color:#a6e22e">location</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>} <span style="color:#a6e22e">context</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">context</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Routes</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/StaticRouter&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Provider&gt;</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If something goes wrong with the component markup, this will light up.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Component Error: &#34;</span>, <span style="color:#a6e22e">err</span>.<span style="color:#a6e22e">stack</span>)
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">html</span>
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">replace</span>(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;&lt;/head&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">`&lt;script&gt;window.__INITIAL_STATE__ = </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">dehydratedStore</span><span style="color:#e6db74">}</span><span style="color:#e6db74">; &lt;/script&gt;&lt;/head&gt;`</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">replace</span>(<span style="color:#e6db74">&#39;&lt;div id=&#34;root&#34;&gt;&lt;/div&gt;&#39;</span>, <span style="color:#e6db74">`&lt;div id=&#34;root&#34;&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">component</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/div&gt;`</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Let&rsquo;s go one by one:</p>
+<ul>
+<li>I created a store variable.</li>
+<li>I set useStaticRendering to true. This is exclusive to Mobx, please refer on how to do something similar with your prefered state management framework.</li>
+<li>I wrap the component with a Provider component with one prop which is the store.</li>
+<li>On the HTML, right before the <code>&lt;/head&gt;</code>tag, i place a script containing  <code>window.__INITIAL_STATE__</code>that contains the dehydrated store we just created. This will be the transport of our server rendered props &amp; states to our client-side to hydrate. That being said, let&rsquo;s look at the client-side.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">dehydratedStore</span> <span style="color:#f92672">=</span> window.<span style="color:#a6e22e">__INITIAL_STATE__</span>;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Rehydrate store
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">root</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#34;root&#34;</span>) <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">HTMLElement</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">store</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">root</span>.<span style="color:#a6e22e">hasChildNodes</span>()
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">?</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AppStore</span>(<span style="color:#a6e22e">dehydratedStore</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">:</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AppStore</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">hydrate</span>(
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Router</span> <span style="color:#a6e22e">history</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">history</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Routes</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Router&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/Provider&gt;,</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">root</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p>I grabbed the <code>window.__INITIAL_STATE__</code>and place it in a variable called dehydratedStore. Then I replace the current AppStore state with the dehydratedStore. Moving on, we wrap our component with a Provider component. It is important to make sure the components are in the same order as the components in renderer.js.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-tsx" data-lang="tsx"><span style="display:flex;"><span><span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">hydrate</span>(
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">Router</span> <span style="color:#a6e22e">history</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">history</span>}&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Routes</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">Router</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">Provider</span>&gt;,
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">root</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// in middleware/renderer.js
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">component</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">renderToString</span>(
+</span></span><span style="display:flex;"><span>  &lt;<span style="color:#f92672">Provider</span> <span style="color:#a6e22e">store</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">store</span>}&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">StaticRouter</span> <span style="color:#a6e22e">location</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">request</span>.<span style="color:#a6e22e">url</span>} <span style="color:#a6e22e">context</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">context</span>}&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">Routes</span> /&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">StaticRouter</span>&gt;
+</span></span><span style="display:flex;"><span>  &lt;/<span style="color:#f92672">Provider</span>&gt;
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>Lastly, in order for the Store to initialize the props properly, we need to add a constructor in the Store file. In this case, our project keeps all global state in app.store.tsx</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-js" data-lang="js"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AppStore</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ....
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">initialState</span><span style="color:#f92672">?</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">initialState</span>) {
+</span></span><span style="display:flex;"><span>      Object.<span style="color:#a6e22e">assign</span>(<span style="color:#66d9ef">this</span>, <span style="color:#a6e22e">initialState</span>)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// .....
+</span></span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Let&rsquo;s add our little getInitialProps() logic into the mix. From here on, you should start on doing things based on what you want to be rendered on the server-side, in our case, we want information to be fetched even before the static page is rendered. This is so that we can eliminate a certain *loading screen. *So I added a section in the renderer.js for plugins.</p>
+<h3 id="plugins">Plugins</h3>
+<p>&ldquo;Plugins&rdquo; is really something I come up with out of the blue. It is where you can call your own custom functions to be executed on server-side for the client-side.</p>
+<p>However, I will have to stop here. I will continue on how to write and create custom plugins that enable us to run functions on the server-side that will populate the store for our client-side, and perhaps eliminating the *loading screen&hellip; . *</p>
+<p>Thank you for taking the time to read the guide. This the end of Part 2. I see you in Part 3!</p>
+<p>I will be breaking this guide into 3 parts. Follow me on <a href="https://twitter.com/qwerqy_dev" title="Twitter">Twitter</a> to get notified when the next part will come out:</p>
+<ol>
+<li><a href="https://aminroslan.com/posts/ssr-to-an-ongoing-production-react-product-part-1" title="Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)">Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)</a></li>
+<li>Implementing SSR to a production React (CRA) product (Part 2: Creating a middleware to render &amp; SSR Enabled State Management Setup)</li>
+<li>Implementing SSR to a production React (CRA) product (Part 3: Finalizing the project) (Coming Soon)</li>
+</ol>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fimplementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

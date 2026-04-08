@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Supercharging My Coding Routine with Github Copilot and ChatGPT | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Superside Design System, Storybook documentation, Component updates, Design System 2.0, Client-side applications, Bug fixing, AI in software engineering, Youtube, Engineering blogs, Developer tweets, Efficient deployment, Documentation writing, Workload management, Github Copilot, ChatGPT, AI-powered tools, Code suggestions, Coding style adaptation, Code autocompletion, Pair programming, Unit testing, Documentation improvement, Code refactoring, Personal growth, Budget management, Idea generation, SEO, Blog writing, Working smart, Efficiency, Continuous learning, Productivity, Virtual coding partners, Avoiding burnout, Time saving" />
+
+
+<meta property="og:title" content="Supercharging My Coding Routine with Github Copilot and ChatGPT" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Supercharging My Coding Routine with Github Copilot and ChatGPT" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Supercharging My Coding Routine with Github Copilot and ChatGPT</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / June 29, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">5 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p>Over in <strong>Superside Design System’s team</strong>, I am responsible to <strong>improve our Storybook documentation</strong> and <strong>update components</strong> to keep up with our design updates.</p>
+<p>Our client-side applications recently been revamped to a new theme, namely <strong>Design System 2.0</strong> and there has been alot of work need to be done and bugs that need fixing.</p>
+<p>A few months ago I have been experimenting with AI, mostly trying to use it as a tool. I watched videos on Youtube, read engineering blog posts and checking out tweets by developers.</p>
+<p>The question I had in mind was <em>“How do I keep up with deploying updates and write documentations for the Design System, and not keep myself overwhelmed with all the work?”.</em></p>
+<p>That said, it was also clear to me that software engineers who utilize AI for work, are already better than software engineers who don’t. Realistically, it is all about getting the job done, and not about <em>clout</em>.</p>
+<p>So yeah, I’m stoked to share my experiences with two tools that have truly upped my coding game. As a software engineer, staying on top of tech trends is crucial. It has also helped me save time, and let me tell you – these tools are <em>game-changers.</em></p>
+<h2 id="the-power-duo-github-copilot--chatgpt">The Power Duo: Github Copilot &amp; ChatGPT</h2>
+<Callout emoji="💡">
+  Both of these tools compliments each other. While I wait for Copilot X, I will
+  stick with these tools.
+</Callout>
+<h3 id="github-copilot">Github Copilot</h3>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/c_scale,w_200/v1687854557/copilot_yxgzjl.png" alt="github copilot"></p>
+<p>I’ve recently switched to using <strong>Github Copilot</strong> from <strong>AWS CodeWhisperer.</strong> The reason being, Copilot has a bit <strong>more context as to what I am building</strong>, based on the file I am in, and the files that are imported to it. Using CodeWhisperer felt like it was trying to help me build a <em>tic tac toe from scratch</em>.</p>
+<p>I got access to Github Copilot chat beta recently and I can’t wait to use it. Having Github Copilot is like having a coding buddy right next to me. It&rsquo;s an AI-powered plugin that makes code suggestions as you type.</p>
+<p><strong>Why it’s awesome</strong>: Copilot’s autocompletion is a lifesaver. It’s incredibly smart and it learns your coding style. This means that it gradually adapts and makes more relevant suggestions. It saves a ton of time and helps me focus on the logic and structure, rather than getting stuck on syntax.</p>
+<h3 id="chatgpt">ChatGPT</h3>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/c_scale,w_200/v1687854557/ChatGPT_logo.svg_hhqejo.png" alt="chatgpt"></p>
+<p>ChatGPT, on the other hand, is more like having a mentor who you can bounce ideas off. You paste your code, ask questions, and ChatGPT comes up with solutions and suggestions.</p>
+<p>I have recently subscribed to ChatGPT Plus so I could start using ChatGPT 4.0 and there is a huge difference! However, due to the 25 messages cap every 3 hours, I only use ChatGPT 4.0 for more <em>complex stuff</em>.</p>
+<p><strong>Why it’s awesome</strong>: This is fantastic for when you’re stuck or when you just need a fresh perspective on your code. It’s almost like pair programming, but with an AI!</p>
+<h2 id="how-these-tools-benefit-my-daily-grind">How These Tools Benefit My Daily Grind</h2>
+<h3 id="at-work">At Work:</h3>
+<ul>
+<li>
+<p><strong>Generating Unit Tests</strong>
+This used to take up a chunk of my time. Now, I just paste the component code to ChatGPT, and it helps me whip up unit tests.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/video/upload/ac_none,c_scale,w_878/v1687854869/generate-unit-tests.gif" alt="Unit testing help from ChatGPT"></p>
+</li>
+<li>
+<p><strong>Improving Documentation</strong>
+Copilot is helping me improve our Design System documentation by offering autocompletions and suggestions that align with how I usually write code. It&rsquo;s like it knows my project inside out. This helps me save time from rewriting every description for a new component. <code>Tab</code> <em>key is my best friend</em>.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/video/upload/ac_none,c_scale,w_800/v1687854996/copilot-autocompletion.gif" alt="improving documentation example"></p>
+</li>
+<li>
+<p><strong>Refactoring</strong>
+When you’ve been looking at the same function for hours, it&rsquo;s easy to miss something. ChatGPT has an outsider’s perspective. I paste the function, ask for refactoring suggestions, and more often than not, it shows me a more efficient way to write that function.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/video/upload/ac_none,c_scale,w_800/v1687854863/refactor-code.gif" alt="refactoring example"></p>
+</li>
+</ul>
+<h3 id="for-personal-growth">For Personal Growth:</h3>
+<ul>
+<li>
+<p><strong>Budget Management</strong>
+I used ChatGPT to give my personal budget (which I track through YNAB) a much-needed overhaul. ChatGPT asked questions to understand my current setup and then suggested a cleaner structure.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/c_scale,w_800/v1687854557/ynab_t74qjm.png" alt="budget management"></p>
+</li>
+<li>
+<p><strong>Generating Ideas</strong>
+When I need inspiration for side projects, ChatGPT is full of ideas.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/image/upload/c_scale,w_800/v1687854558/project_ideas_tyvbrn.png" alt="idea generation with chatgpt"></p>
+</li>
+<li>
+<p><strong>SEO and Blog Writing</strong>:
+While I love coding, I’m not an expert on SEO or content writing. ChatGPT helps generate SEO keywords and even helps me structure blog posts.</p>
+<p><img src="https://res.cloudinary.com/dslokuhdk/video/upload/ac_none,c_scale,w_800/v1687854863/write-blog-posts.gif" alt="seo and blog writing"></p>
+</li>
+</ul>
+<h2 id="working-smart">Working smart</h2>
+<p>As a software engineer, <strong>efficiency</strong> and <strong>constant learning</strong> are key. These tools save me time and offer new perspectives. This means I can take on more complex tasks at work, spend more time learning new technologies, and even work on personal projects that can be added to my portfolio.</p>
+<p>Also, the fact that Copilot learns my coding style is huge. It&rsquo;s like <em>customized on-the-job training</em>.</p>
+<p>In my three months of using Github Copilot and ChatGPT, I’ve seen my productivity soar. They’re like my virtual coding partners, and I believe they have a lot to offer to any developer looking to grow in their career.</p>
+<p>With all the time I’ve saved up, I get to do more tasks and not get too <em>burnt out.</em> It is important to understand that these tools are just tools, not something that should take over, but to be utilized. <em>We can’t grow another pair of arms, but having tools like these, makes it feel like I can</em>.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Fsupercharging-my-coding-routine-with-github-copilot-and-chatgpt%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

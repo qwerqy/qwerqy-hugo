@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on Amin Roslan</title>
+    <link>http://localhost:1313/blog/</link>
+    <description>Recent content in Blog on Amin Roslan</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ReserveKit Devblog - #1 Building the Foundation</title>
+      <link>http://localhost:1313/blog/bts-reservekit-development/</link>
+      <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/bts-reservekit-development/</guid>
+      <description>&lt;p&gt;Hello readers,&lt;/p&gt;&#xA;&lt;p&gt;I recently launched &lt;a href=&#34;https://reservekit.io&#34;&gt;ReserveKit&lt;/a&gt;, a ready-to-use booking API and backend that integrates seamlessly into any project. While our Product Hunt launch on February 3rd, 2025, didn&amp;rsquo;t generate massive traffic, we did gain some valuable early signups. This post dives into the initial development process, sharing the challenges and solutions encountered while building ReserveKit&amp;rsquo;s foundation.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-idea-solving-a-common-problem&#34;&gt;The Idea: Solving a Common Problem&lt;/h2&gt;&#xA;&lt;p&gt;The popularity of padel and pickleball has exploded in Malaysia, creating a surge in demand for sports centers. A common thread among these centers is the need for a robust booking system. This need resonated with me, as I&amp;rsquo;d considered building such a system for a friend&amp;rsquo;s sports center five years prior. Although that project didn&amp;rsquo;t materialize, the idea remained.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Creating Persistent Modals in Next.js with Parallel Routes and Route Interception</title>
+      <link>http://localhost:1313/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</link>
+      <pubDate>Thu, 14 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</guid>
+      <description>&lt;p&gt;In Next.js, creating modals with parallel routes is a well-documented approach, but there&amp;rsquo;s one thing missing from the official docs: how to make the modal persist across page reloads. I faced this challenge recently when I was tasked with rebuilding our settings page as a modal, and I wanted to share the approach I took.&lt;/p&gt;&#xA;&lt;h2 id=&#34;initial-considerations&#34;&gt;Initial Considerations&lt;/h2&gt;&#xA;&lt;p&gt;When rebuilding the settings as a modal, there were a couple of options:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How I reduced a search function query’s execution time by 85%</title>
+      <link>http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</link>
+      <pubDate>Thu, 24 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</guid>
+      <description>&lt;p&gt;Let&amp;rsquo;s make something clear, &lt;em&gt;I am not a database expert&lt;/em&gt;. Though I work with different databases in the past,&#xA;I would most likely use an ORM but I would never see myself doing SQL queries, until recently.&lt;/p&gt;&#xA;&lt;p&gt;So I have been doing alot of SQL queries lately for my Postgres DB on Supabase.&#xA;If you have read my &lt;a href=&#34;https://qwerqy.com/blog/building-a-webapp-for-cafes&#34;&gt;previous blogpost&lt;/a&gt;,&#xA;you know that I use &lt;a href=&#34;https://supabase.com&#34;&gt;Supabase&lt;/a&gt; as the backend for &lt;a href=&#34;https://cafeist.io&#34;&gt;Cafeist&lt;/a&gt;. Supabase&amp;rsquo;s&#xA;Javascript API client is really helpful. It makes it easy to make queries to the API.&#xA;However, once I started to become more ambitious with the features that I implemented,&#xA;I realised there were limitations with the existing Javascript client. With that said, I decided&#xA;to go &lt;em&gt;raw&lt;/em&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Building a Web App for Cafes</title>
+      <link>http://localhost:1313/blog/building-a-webapp-for-cafes/</link>
+      <pubDate>Sat, 12 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/building-a-webapp-for-cafes/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This article was enhanced by ChatGPT so pardon the bombastic sentences.&#xA;&lt;/Callout&gt;&#xA;&lt;h2 id=&#34;a-brief-backstory-of-my-café-adventures&#34;&gt;A Brief Backstory of My Café Adventures&lt;/h2&gt;&#xA;&lt;p&gt;Coffee has always been a source of delight for me. Its aromatic allure and the satisfaction of finding the perfect cup with a delightful taste have always enchanted me.&lt;/p&gt;&#xA;&lt;p&gt;Earlier this year, my beloved café, which I frequented often, temporarily closed its doors for renovations. This event prompted my partner and me to embark on a café-hunting expedition within our locality.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>5 Tools I Use as a Remote Software Engineer</title>
+      <link>http://localhost:1313/blog/5-tools-i-use-as-a-remote-software-engineer/</link>
+      <pubDate>Thu, 13 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/5-tools-i-use-as-a-remote-software-engineer/</guid>
+      <description>&lt;p&gt;Time is a &lt;strong&gt;bitch&lt;/strong&gt;. It doesn&amp;rsquo;t wait for you, it doesn&amp;rsquo;t care if you are slacking, and it only seems to help when you are heartbroken — as the saying goes, &lt;em&gt;&amp;ldquo;only time can mend a broken heart.&amp;rdquo;&lt;/em&gt; That said, if you are able to control your time, you are able to control everything in your life.&lt;/p&gt;&#xA;&lt;p&gt;As a software engineer who works remotely, I appreciate the flexibility that comes with the job.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Supercharging My Coding Routine with Github Copilot and ChatGPT</title>
+      <link>http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</link>
+      <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</guid>
+      <description>&lt;p&gt;Over in &lt;strong&gt;Superside Design System’s team&lt;/strong&gt;, I am responsible to &lt;strong&gt;improve our Storybook documentation&lt;/strong&gt; and &lt;strong&gt;update components&lt;/strong&gt; to keep up with our design updates.&lt;/p&gt;&#xA;&lt;p&gt;Our client-side applications recently been revamped to a new theme, namely &lt;strong&gt;Design System 2.0&lt;/strong&gt; and there has been alot of work need to be done and bugs that need fixing.&lt;/p&gt;&#xA;&lt;p&gt;A few months ago I have been experimenting with AI, mostly trying to use it as a tool. I watched videos on Youtube, read engineering blog posts and checking out tweets by developers.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Streamlining Version Control for Efficient Collaboration</title>
+      <link>http://localhost:1313/blog/streamlining-version-control-for-efficient-collaboration/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/streamlining-version-control-for-efficient-collaboration/</guid>
+      <description>&lt;p&gt;As a Frontend Engineer at Superside, we have about 60+ members &lt;strong&gt;worldwide&lt;/strong&gt; working on the codebase &lt;strong&gt;day-to-day,&lt;/strong&gt; &lt;strong&gt;around the clock.&lt;/strong&gt; In a fast-paced environment, version control is the backbone of my workflow.&lt;/p&gt;&#xA;&lt;p&gt;Over the past year, I have come to rely on several key Git commands that have greatly improved my efficiency and collaboration with teammates. In this blog post, I will share my most used Git commands and explain &lt;strong&gt;how they have enhanced my development process.&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Exploring Polymorphic Components in React with TypeScript</title>
+      <link>http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/</link>
+      <pubDate>Thu, 15 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Polymorphic components&lt;/strong&gt; are a powerful concept within React that enables &lt;strong&gt;adaptability&lt;/strong&gt; and &lt;strong&gt;flexibility&lt;/strong&gt;. In this blog post, we&amp;rsquo;ll explore polymorphic components and demonstrate their usage with TypeScript.&lt;/p&gt;&#xA;&lt;h2 id=&#34;understanding-polymorphic-components&#34;&gt;Understanding Polymorphic Components&lt;/h2&gt;&#xA;&lt;p&gt;Polymorphism refers to the ability of an object to take on different forms or behaviors based on the context. Think of it as &lt;em&gt;Ditto&lt;/em&gt; from &lt;strong&gt;Pokemon.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://assets.pokemon.com/assets/cms2/img/pokedex/full/132.png&#34; alt=&#34;Ditto&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;In the context of React:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Polymorphic components in React allow for the creation of &lt;strong&gt;versatile UI&lt;/strong&gt; elements that can &lt;strong&gt;adapt their rendering and behavior&lt;/strong&gt; based on the context.&lt;/li&gt;&#xA;&lt;li&gt;By leveraging polymorphic components, developers can build &lt;strong&gt;reusable&lt;/strong&gt; and &lt;strong&gt;adaptable&lt;/strong&gt; components that suit different use cases.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;TypeScript&amp;rsquo;s&lt;/strong&gt; type system enhances the &lt;strong&gt;correctness&lt;/strong&gt; and &lt;strong&gt;maintainability&lt;/strong&gt; of polymorphic components, providing &lt;strong&gt;strong typing&lt;/strong&gt; and &lt;strong&gt;error detection&lt;/strong&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If you are in a scenario of building a components library, having a few components that adapts polymorphism helps&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Blueprint for Building Layouts with Grid System</title>
+      <link>http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/</link>
+      <pubDate>Thu, 08 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/</guid>
+      <description>&lt;p&gt;In the world of UI design and development, creating responsive layouts that adapt seamlessly to various screen sizes is &lt;strong&gt;crucial&lt;/strong&gt;. One effective tool for achieving this is a &lt;strong&gt;&lt;a href=&#34;https://www.interaction-design.org/literature/article/the-grid-system-building-a-solid-design-layout&#34;&gt;grid system.&lt;/a&gt;&lt;/strong&gt; In this blog post, we will explore the importance of grid systems, discuss the perspectives of engineers and designers regarding grids, and demonstrate the process of building a React component for a page&amp;rsquo;s layout using a grid system.&lt;/p&gt;&#xA;&lt;h3 id=&#34;grid-system&#34;&gt;Grid System&lt;/h3&gt;&#xA;&lt;p&gt;A grid system in the digital world is akin to a print layout in organizing elements on a page. It serves as a guide for designers, enabling them to create multiple layouts that support responsive themes for different screen sizes. By establishing a consistent grid structure, designers can align and position elements more efficiently, ensuring a visually appealing and harmonious user interface.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Full-blown Frontend Engineer!</title>
+      <link>http://localhost:1313/blog/full-blown-frontend-engineer/</link>
+      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/full-blown-frontend-engineer/</guid>
+      <description>&lt;p&gt;Transitioning to a full-time front-end engineering role can be an exciting and transformative experience. The possibilities for growth and exploration are endless. At the start of 2023, I was assigned to the Design Systems team at Superside, a renowned design and development company. In this blog post, I will share my insights into why choosing one side of the branch can be great, the inner workings of being in a &lt;em&gt;foundational&lt;/em&gt; team, and the contrasting working style compared to &lt;em&gt;product-focused&lt;/em&gt; teams, and the challenges and inspirations encountered along the way.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Server to server communication using Socket.io for Battlev</title>
+      <link>http://localhost:1313/blog/server-to-server-communication-using-socket-io-for-battlev/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/server-to-server-communication-using-socket-io-for-battlev/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Progress Update: Project Battlev is progressing just nicely. Already decided on what type of design I want for the interface, the color scheme. I&amp;rsquo;ve also converted my API server to Typescript for type checking. In this post I will try my best to share how I implemented my idea on how to make my API server and my Discord client server to communicate with each other using Sockets.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;back-to-back-communication&#34;&gt;Back to back communication.&lt;/h2&gt;&#xA;&lt;p&gt;So to bring you guys up to speed, I&amp;rsquo;ve set up the dashboard, and have placed in the ability to change my Clientbot&amp;rsquo;s nickname in one of my guilds in Discord. I do this by doing a PUT request to my API server and within the endpoint, it will update the document based on the body of the request. All good and dandy, sounds like it&amp;rsquo;s done. But not quite&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Authenticating Battlev with Discord OAuth2.0 [Part 2]</title>
+      <link>http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</link>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</guid>
+      <description>&lt;p&gt;Hello my fellow readers! I am back with exciting news!&lt;/p&gt;&#xA;&lt;p&gt;I managed to get the OAuth 2.0 &lt;em&gt;thing&lt;/em&gt; working to log in into the dashboard of my project Battlev. It was hard at first to be honest. It was actually the first time I&amp;rsquo;m implementing authentication on a Nodejs-based server.&lt;/p&gt;&#xA;&lt;p&gt;Thanks to the help of &lt;a href=&#34;https://passportjs.org/&#34; title=&#34;Passportjs&#34;&gt;Passport.js&lt;/a&gt;, I don&amp;rsquo;t have to go through the whole process of creating sessions on the server and client. With that being said, do note that the client-side and the server are both running in separate ports. Had trouble with CORS but I solved it. In this post, I will try my best to explain the steps I took to implement this authentication feature.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Refining the Battlev Project</title>
+      <link>http://localhost:1313/blog/refining-the-battlev-project/</link>
+      <pubDate>Sun, 24 Mar 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/refining-the-battlev-project/</guid>
+      <description>&lt;p&gt;Hello again, in this short blog post I will be sharing about my thoughts on one of my side projects, Battlev.&lt;/p&gt;&#xA;&lt;p&gt;(If you guys don&amp;rsquo;t know what Battlev is, check out this post &lt;a href=&#34;https://aminroslan.com/posts/battlev&#34; title=&#34;battlev&#34;&gt;here&lt;/a&gt;.)&lt;/p&gt;&#xA;&lt;p&gt;For the past 1 month, I&amp;rsquo;ve setup a semi-production build of Battlev on Heroku alongside it&amp;rsquo;s landing page. There are two components, the page and the bot itself. For the bot, I&amp;rsquo;ve placed it in 4 servers where all of them are my friends&amp;rsquo;. The bot is mostly used for it&amp;rsquo;s ability to play music in voice channels, and having light chats via the Cleverbot API integration. However, it only lasted until last week as my free dyno for this month has depleted. So I&amp;rsquo;m taking this project a bit further.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Are you a builder or a developer?</title>
+      <link>http://localhost:1313/blog/are-you-a-builder-or-a-developer/</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/are-you-a-builder-or-a-developer/</guid>
+      <description>&lt;p&gt;While I was driving in my neighbourhood, a thought came across my mind. It&amp;rsquo;s one of those philosophical thoughts you get every once a day. This one speaks&lt;/p&gt;&#xA;&lt;p&gt;You are either a builder or a developer. Which one are you?&lt;/p&gt;&#xA;&lt;p&gt;I didn&amp;rsquo;t answer. I let the thought float around my mind. Making sure it doesn&amp;rsquo;t drift apart, I try very hard to think about it until it seeps in.&lt;/p&gt;&#xA;&lt;p&gt;So, today I get the chance to actually talk about this in the blog. What&amp;rsquo;s the difference? Builder or Developer? Build or Develop? On the surface, they both mean the same. Well, not really.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management)</title>
+      <link>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</link>
+      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;Hello guys, welcome back! This is part 2 of the guide series on how to implement SSR to your ongoing production React product.&lt;/p&gt;&#xA;&lt;h2 id=&#34;recap&#34;&gt;Recap&lt;/h2&gt;&#xA;&lt;p&gt;So in part 1 of the guide series, I showed you how I prepared the bootstrap file that will be the entry script to run our project, and by using react-app-rewired how we can override the current CRA configs to enable some Webpack configs to work with SSR.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How to create a Discord bot in Node.js that fetches images from Imgur</title>
+      <link>http://localhost:1313/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;It&amp;rsquo;s the weekend now and I just got back from a Chinese New Year party. I always thought of building my own Discord bot and have it in my Discord channel where it&amp;rsquo;s convenient for us to request anything from it. I know there are alot more better Discord bots out there, however I just felt having a bot that is built personally by me. It&amp;rsquo;s like having my own child!&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)</title>
+      <link>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;There I was, trying to find out what the heck is SSR on google. I get server-side rendering, that&amp;rsquo;s basically what backend frameworks like Laravel and Rails do, but what do you mean with React? &lt;em&gt;Isn&amp;rsquo;t React already good enough?&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Turns out I was wrong. So I started studying and researching about it. Guides after guides. Finally, I got a bit of a grasp on what it is.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,88 @@
+{{ define "main" }}
+<section class="py-8">
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-2">{{ .Title }}</h1>
+  {{ with .Description }}
+  <p class="text-zinc-400 mb-8 leading-relaxed">{{ . }}</p>
+  {{ end }}
+
+  {{ if eq .Section "blog" }}
+  {{ range .Pages.ByDate.Reverse }}
+  <a href="{{ .Permalink }}" class="block mb-4 p-4 rounded-lg border border-zinc-800 hover:border-zinc-600 transition-colors group">
+    <p class="text-xs text-zinc-500 mb-1">{{ .Date.Format "January 2, 2006" }}</p>
+    <h2 class="font-heading font-semibold text-zinc-200 group-hover:text-zinc-100 transition-colors mb-1">{{ .Title }}</h2>
+    <p class="text-sm text-zinc-500 line-clamp-2">{{ .Params.excerpt }}</p>
+  </a>
+  {{ end }}
+
+  {{ else if eq .Section "projects" }}
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {{ range .Pages.ByDate.Reverse }}
+    <a href="{{ if .Params.external }}{{ .Params.external }}{{ else }}{{ .Permalink }}{{ end }}"
+       {{ if .Params.external }}target="_blank" rel="noopener noreferrer"{{ end }}
+       class="block p-4 rounded-lg border border-zinc-800 hover:border-zinc-600 transition-colors group">
+      {{ if .Params.image }}
+      <div class="mb-3 overflow-hidden rounded-md bg-zinc-900 h-36">
+        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full h-full object-cover rounded-md" />
+      </div>
+      {{ end }}
+      <h2 class="font-heading font-semibold text-zinc-200 group-hover:text-zinc-100 transition-colors mb-1">{{ .Title }}</h2>
+      <p class="text-sm text-zinc-500">{{ .Params.excerpt }}</p>
+      {{ if .Params.github }}
+      <p class="text-xs text-zinc-600 mt-2">
+        <a href="{{ .Params.github }}" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-400 transition-colors" onclick="event.stopPropagation()">GitHub &rarr;</a>
+      </p>
+      {{ end }}
+    </a>
+    {{ end }}
+  </div>
+
+  {{ else if eq .Section "til" }}
+  <div class="space-y-6">
+    {{ range .Pages.ByDate.Reverse }}
+    <article class="border border-zinc-800 rounded-lg p-5 hover:border-zinc-600 transition-colors">
+      <div class="flex justify-between items-start mb-2">
+        <a href="{{ .Permalink }}" class="font-heading font-semibold text-zinc-200 hover:text-zinc-100 transition-colors text-lg">{{ .Title }}</a>
+        <span class="text-xs text-zinc-500 ml-4 shrink-0">{{ .Date.Format "Jan 2, 2006" }}</span>
+      </div>
+      {{ if .Params.tags }}
+      <div class="flex flex-wrap gap-1 mb-3">
+        {{ range .Params.tags }}
+        <span class="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">{{ . }}</span>
+        {{ end }}
+      </div>
+      {{ end }}
+      {{ if .Params.comment }}
+      <p class="text-xs text-zinc-500 italic mb-2">{{ .Params.comment }}</p>
+      {{ end }}
+      <div class="prose prose-sm max-w-none text-sm">{{ .Content }}</div>
+    </article>
+    {{ end }}
+  </div>
+
+  {{ else if eq .Section "talks" }}
+  <div class="space-y-6">
+    {{ range .Pages.ByDate.Reverse }}
+    <article class="border border-zinc-800 rounded-lg p-5">
+      <p class="text-xs text-zinc-500 mb-1">{{ .Date.Format "January 2, 2006" }}</p>
+      <h2 class="font-heading font-semibold text-zinc-200 mb-2">{{ .Title }}</h2>
+      <p class="text-sm text-zinc-400 mb-3">{{ .Params.excerpt }}</p>
+      {{ if .Params.video }}
+      <a href="{{ .Params.video }}" target="_blank" rel="noopener noreferrer" class="text-sm text-snow-pome hover:text-snow-skin transition-colors">Watch video &rarr;</a>
+      {{ end }}
+    </article>
+    {{ end }}
+  </div>
+
+  {{ else }}
+  {{ range .Pages.ByDate.Reverse }}
+  <article class="mb-8 pb-8 border-b border-zinc-800 last:border-0">
+    <a href="{{ .Permalink }}" class="group">
+      <h2 class="font-heading font-semibold text-xl text-zinc-200 group-hover:text-zinc-100 transition-colors mb-1">{{ .Title }}</h2>
+    </a>
+    <p class="text-xs text-zinc-500 mb-2">{{ .Date.Format "January 2, 2006" }}</p>
+    <p class="text-sm text-zinc-400">{{ .Params.excerpt }}</p>
+  </article>
+  {{ end }}
+  {{ end }}
+</section>
+{{ end }}

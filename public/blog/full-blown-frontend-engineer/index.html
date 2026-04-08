@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2b3a55" />
+<title>Full-blown Frontend Engineer! | Amin Roslan</title>
+<meta name="description" content="" />
+<meta name="author" content="Amin Roslan" />
+<meta name="keywords" content="Transitioning to a full-time front-end engineering role, Design Systems team, Superside, T-Shaped Engineer, React and NodeJS, Frontend specialisation, Design System, Frontend Engineer, Documentation management, Creating new components, Contributing to the development of product features, Contrasting work-style, UI library maintenance, Stakeholders in design and development, Apple’s HIG, Vercel’s Vercel Design, Adobe’s Spectrum, Challenges in front-end engineering, Effective communication and collaboration, Professional growth in React development." />
+
+
+<meta property="og:title" content="Full-blown Frontend Engineer!" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="http://localhost:1313/blog/full-blown-frontend-engineer/" />
+<meta property="og:site_name" content="Amin Roslan" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://aminroslan.dev/static/images/avatar.png" />
+<meta property="og:locale" content="en-US" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Full-blown Frontend Engineer!" />
+<meta name="twitter:description" content="" />
+
+
+<link rel="canonical" href="http://localhost:1313/blog/full-blown-frontend-engineer/" />
+
+
+<link rel="shortcut icon" href="/static/favicons/favicon.ico" />
+<link rel="apple-touch-icon" href="/static/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png" />
+<link rel="manifest" href="/static/favicons/site.webmanifest" />
+
+
+
+<meta name="yandex-verification" content="0a57751d5ee67e3b" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'snow-pink': '#e8c4c4',
+          'snow-skin': '#f2e5e5',
+          'snow-pome': '#ce7777',
+          'snow-navy': '#2b3a55',
+          'snow-dark-navy': '#151C29',
+        },
+        fontFamily: {
+          body: ['Inter', 'sans-serif'],
+          heading: ['Barlow', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+
+<style>
+  html { min-width: 360px; scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Barlow', sans-serif; }
+
+   
+  .prose { color: #d4d4d8; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { color: #e8c4c4; font-family: 'Barlow', sans-serif; }
+  .prose a { color: #ce7777; text-decoration: underline; }
+  .prose a:hover { color: #f2e5e5; }
+  .prose code { color: #ec4899; background: #1f2937; padding: 0.1em 0.3em; border-radius: 0.25em; font-size: 0.875em; }
+  .prose pre { background: #1f2937; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .prose pre code { color: #d1d5db; background: none; padding: 0; }
+  .prose blockquote { border-left: 4px solid #e8c4c4; color: #a1a1aa; padding-left: 1rem; }
+  .prose strong { color: #f4f4f5; }
+  .prose ul li::marker { color: #71717a; }
+  .prose ol li::marker { color: #71717a; }
+  .prose hr { border-color: #3f3f46; }
+  .prose table thead th { color: #f4f4f5; border-bottom-color: #52525b; }
+  .prose table tbody tr { border-bottom-color: #3f3f46; }
+  .prose img { border-radius: 0.5rem; margin: 1.5rem auto; }
+
+   
+  .nav-mobile { display: none; }
+  @media (max-width: 640px) {
+    .nav-desktop { display: none; }
+    .nav-mobile { display: block; }
+  }
+
+   
+  .highlight pre { background: #282c34 !important; border: 1px solid #374151; border-radius: 0.5rem; padding: 1rem; overflow-x: auto; }
+  .highlight { margin: 1.5rem 0; }
+
+   
+  a.link-hover:hover { text-decoration: underline; }
+</style>
+
+</head>
+<body class="w-full bg-zinc-950 text-zinc-400 font-body">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6">
+    <header class="flex justify-between items-center py-6 w-full">
+  <a href="/" class="font-heading font-bold text-snow-pink text-lg tracking-wide hover:text-snow-skin transition-colors">
+    Amin Roslan
+  </a>
+  <nav class="nav-desktop flex gap-6 text-sm text-zinc-400">
+    <a href="/blog" class="hover:text-zinc-100 transition-colors text-zinc-100">Blog</a>
+    <a href="/projects" class="hover:text-zinc-100 transition-colors ">Projects</a>
+    <a href="/til" class="hover:text-zinc-100 transition-colors ">TIL</a>
+    <a href="/talks" class="hover:text-zinc-100 transition-colors ">Talks</a>
+    <a href="/work" class="hover:text-zinc-100 transition-colors ">Work</a>
+    <a href="/reach" class="hover:text-zinc-100 transition-colors ">Reach</a>
+  </nav>
+  
+  <div class="nav-mobile">
+    <details class="relative">
+      <summary class="list-none cursor-pointer text-zinc-400 hover:text-zinc-100 p-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </summary>
+      <nav class="absolute right-0 top-8 bg-zinc-900 border border-zinc-800 rounded-lg p-4 flex flex-col gap-3 text-sm text-zinc-400 min-w-32 z-50">
+        <a href="/blog" class="hover:text-zinc-100 transition-colors">Blog</a>
+        <a href="/projects" class="hover:text-zinc-100 transition-colors">Projects</a>
+        <a href="/til" class="hover:text-zinc-100 transition-colors">TIL</a>
+        <a href="/talks" class="hover:text-zinc-100 transition-colors">Talks</a>
+        <a href="/work" class="hover:text-zinc-100 transition-colors">Work</a>
+        <a href="/reach" class="hover:text-zinc-100 transition-colors">Reach</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+    <main class="w-full min-h-screen">
+      
+<article class="py-8">
+  
+  <h1 class="font-heading font-bold text-3xl text-zinc-100 mb-4">Full-blown Frontend Engineer!</h1>
+
+  
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-8 pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-2 text-sm text-zinc-500">
+      <img src="/static/images/avatar.png" alt="Amin Roslan" class="h-6 w-6 rounded-full" />
+      <span>Amin Roslan / June 1, 2023</span>
+    </div>
+    
+    <span class="text-xs text-zinc-500">4 min read</span>
+    
+  </div>
+
+  
+  
+
+  
+  
+
+  
+  <div class="prose max-w-none leading-relaxed">
+    <p>Transitioning to a full-time front-end engineering role can be an exciting and transformative experience. The possibilities for growth and exploration are endless. At the start of 2023, I was assigned to the Design Systems team at Superside, a renowned design and development company. In this blog post, I will share my insights into why choosing one side of the branch can be great, the inner workings of being in a <em>foundational</em> team, and the contrasting working style compared to <em>product-focused</em> teams, and the challenges and inspirations encountered along the way.</p>
+<h3 id="t-shaped-engineer">T-Shaped Engineer</h3>
+<p>Between 2018 and 2021, I have not only focused on working with React, but a lot with the backend too. NodeJS was my <em>go-to</em> backend framework since it’s Javascript.</p>
+<p>I’ve worked as a full-stack engineer since my first company, and I’ve always preferred working on the frontend part more because I like to visually see the changes I make. I knew that one day I had to choose a specialisation, and I decided that it would be frontend. That said, I see this as becoming a <strong>T-shaped engineer</strong>.</p>
+<p>A T-shaped engineer refers to someone with a broad range of knowledge across various disciplines, symbolized by the horizontal bar of the &ldquo;T.&rdquo; Additionally, they possess deep expertise in a specific area, represented by the vertical stroke of the &ldquo;T&rdquo;. Think of it as, putting 80% focus on frontend development, and 20% on the others. <strong>Knowing every skills the market throw at you, but only specialising on one.</strong></p>
+<h3 id="design-system">Design System</h3>
+<p>As a Frontend Engineer in the Design System team, it has opened up a world of opportunities for me to claim. The stuff I do includes, managing documentation, maintaining existing components, creating new components, and contributing to the development of product features by working closely with designers and engineers. This holistic approach enables me to have a comprehensive understanding of the <strong>entire project life cycle</strong>. Of course, not everything’s all flowers and sunshine…</p>
+<h3 id="contrasting-work-style">Contrasting work-style</h3>
+<p>Compared to working in feature teams, the working style in maintaining a company’s UI library is distinct. Instead of focusing solely on product features, the sprints are geared towards providing <strong>solutions that enhance the development process</strong>. In this role, stakeholders are developers and designers within the company. The position entails working across different teams at Superside, acting as a liaison to understand and address their unique challenges, thus creating <strong>a web of connections between each team</strong>.</p>
+<h3 id="ooooooh-moments"><em>Ooooooh</em> moments</h3>
+<p>Being a part of this team has allowed me to explore new avenues in React development. While my previous experience primarily involved the interaction between React and Node.js, I now have the opportunity to delve deeper into the intricacies of React and push the boundaries of what can be achieved. Inspirations such as <strong>Apple’s HIG</strong>, <strong>Vercel’s Vercel Design</strong>, and <strong>Adobe’s Spectrum</strong> to name a few, have provided valuable insights and opened up fresh possibilities in my coding approach, or in other words, <em>coding design</em>.</p>
+<h3 id="everythings-like-a-walk-in-the-parkfilled-with-lava">Everything’s like a walk in the park…filled with lava</h3>
+<p>Transitioning to a full-time front-end engineer and working closely with multiple teams has its fair share of challenges. One of the main hurdles I encountered was developing a deep understanding of React. This involved constant learning and staying updated with the latest advancements in the framework. Additionally, the task of interacting with various teams simultaneously presented its own set of challenges. However, by fostering effective communication and collaboration, these obstacles can be overcome.</p>
+<h3 id="frontend-master-race">Frontend Master Race!</h3>
+<p>Shifting to a full-time front-end engineer role and working on high-level requirements have been a transformative journey. Embracing the concept of a T-shaped engineer has empowered me to contribute effectively across multiple disciplines while continuously expanding my knowledge in React development. Working in the Design System team has provided a unique opportunity to collaborate with various teams, understand their needs, and build connections within the organization. The challenges encountered along the way have been overshadowed by the immense personal and professional growth that this role has offered. I look forward to further exploring new technologies, nurturing collaborations, and making a lasting impact on the projects I undertake.</p>
+
+  </div>
+
+  
+  
+  <div class="flex items-center justify-between mt-12 pt-6 border-t border-zinc-800">
+    <a href="https://twitter.com/search?q=http%3A%2F%2Flocalhost%3A1313%2Fblog%2Ffull-blown-frontend-engineer%2F" target="_blank" rel="noopener noreferrer" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">
+      Discuss on Twitter &rarr;
+    </a>
+    <a href="/blog" class="text-sm text-zinc-400 hover:text-zinc-200 transition-colors">&larr; Back to Blog</a>
+  </div>
+  
+</article>
+
+    </main>
+    <footer class="flex flex-col sm:flex-row gap-8 py-10 text-zinc-500 text-sm border-t border-zinc-800 mt-16">
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Sitemap</span>
+    <a href="/" class="hover:text-zinc-300 transition-colors">Home</a>
+    <a href="/reach" class="hover:text-zinc-300 transition-colors">Reach</a>
+    <a href="/blog" class="hover:text-zinc-300 transition-colors">Blog</a>
+    <a href="/projects" class="hover:text-zinc-300 transition-colors">Projects</a>
+    <a href="/sitemap.xml" class="hover:text-zinc-300 transition-colors">Sitemap</a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="text-zinc-300 font-semibold uppercase text-xs tracking-wider mb-1">Social Media</span>
+    <a href="https://github.com/qwerqy" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Github</a>
+    <a href="https://linkedin.com/in/aminroslan" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">LinkedIn</a>
+    <a href="https://instagram.com/taikomin" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Instagram</a>
+    <a href="https://twitter.com/taikom1n" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">Twitter</a>
+  </div>
+</footer>
+
+  </div>
+</body>
+</html>

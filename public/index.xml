@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Amin Roslan</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Amin Roslan</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Feb 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Defer vs EOF calls in Go</title>
+      <link>http://localhost:1313/til/defer-vs-eof-go/</link>
+      <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/defer-vs-eof-go/</guid>
+      <description>&lt;h2 id=&#34;key-differences&#34;&gt;Key Differences:&lt;/h2&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;Execution Order&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;deferExample&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Output: 3, 2, 1 (LIFO - Last In First Out)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;normalExample&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Output: 1, 2, 3 (Sequential)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;&#xA;&lt;li&gt;&lt;strong&gt;Error Handling&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;withDefer&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Open&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;file.txt&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// file will never be closed&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;// guaranteed to run even if error occurs later&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// ... work with file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;withoutDefer&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Open&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;file.txt&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// file will never be closed&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// ... work with file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;f&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Close&lt;/span&gt;() &lt;span style=&#34;color:#75715e&#34;&gt;// might not be reached if panic or early return occurs&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;&#xA;&lt;li&gt;&lt;strong&gt;Early Returns&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;withDefer&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;defer&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cleanup&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; &amp;lt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// cleanup still runs&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// ... more code&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;func&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;withoutDefer&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;) {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;x&lt;/span&gt; &amp;lt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cleanup&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;// need to duplicate cleanup code&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// ... more code&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Println&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;cleanup&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Key advantages of &lt;code&gt;defer&lt;/code&gt;:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How SSR Works in React</title>
+      <link>http://localhost:1313/til/how-ssr-works/</link>
+      <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/how-ssr-works/</guid>
+      <description>&lt;p&gt;Server-Side Rendering (SSR) is when React components are rendered to HTML on the server before being sent to the client. Here&amp;rsquo;s the flow:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Server Receives Request&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;User requests a page&lt;/li&gt;&#xA;&lt;li&gt;Server runs React code&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Server Renders React&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;React components are rendered to HTML strings&lt;/li&gt;&#xA;&lt;li&gt;Initial state is serialized&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-jsx&#34; data-lang=&#34;jsx&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Example server code&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ReactDOMServer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;renderToString&lt;/span&gt;(&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;App&lt;/span&gt; /&amp;gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JSON&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;stringify&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;initialState&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Server Sends Response&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;HTML is sent to browser&lt;/li&gt;&#xA;&lt;li&gt;Initial state is included in a script tag&lt;/li&gt;&#xA;&lt;li&gt;React client bundle is included&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;&lt;strong&gt;Client Hydration&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>I Need A Job AI</title>
+      <link>http://localhost:1313/projects/ineedajob/</link>
+      <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/ineedajob/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Javascript Asynchronous Precendence.</title>
+      <link>http://localhost:1313/til/javascript-asynchronous-precendence/</link>
+      <pubDate>Thu, 20 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/javascript-asynchronous-precendence/</guid>
+      <description>&lt;p&gt;What would the output of the following function be?&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;setTimeout&lt;/span&gt;(() =&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Promise((&lt;span style=&#34;color:#a6e22e&#34;&gt;resolve&lt;/span&gt;) =&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;resolve&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)).&lt;span style=&#34;color:#a6e22e&#34;&gt;then&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt;) =&amp;gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;val&lt;/span&gt;))&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;console&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;log&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;console.log(1)&lt;/code&gt; runs first, &lt;code&gt;Promise&lt;/code&gt; goes second and lastly &lt;code&gt;setTimeout&lt;/code&gt;. This is because JavaScript has different types of queues for handling asynchronous operations:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;&lt;strong&gt;Call Stack&lt;/strong&gt;: Executes synchronous code immediately (&lt;code&gt;console.log(1)&lt;/code&gt;)&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Microtask Queue&lt;/strong&gt;: Handles Promises and process.nextTick(), has higher priority&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Macrotask Queue&lt;/strong&gt;: Handles setTimeout, setInterval, and I/O operations&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;Even though both &lt;code&gt;setTimeout&lt;/code&gt; and &lt;code&gt;Promise&lt;/code&gt; are asynchronous operations, Promises are processed in the microtask queue which is processed immediately after the call stack is empty, while &lt;code&gt;setTimeout&lt;/code&gt; callbacks go into the macrotask queue which is processed later.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ReserveKit</title>
+      <link>http://localhost:1313/projects/reservekit/</link>
+      <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/reservekit/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ReserveKit Devblog - #1 Building the Foundation</title>
+      <link>http://localhost:1313/blog/bts-reservekit-development/</link>
+      <pubDate>Wed, 05 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/bts-reservekit-development/</guid>
+      <description>&lt;p&gt;Hello readers,&lt;/p&gt;&#xA;&lt;p&gt;I recently launched &lt;a href=&#34;https://reservekit.io&#34;&gt;ReserveKit&lt;/a&gt;, a ready-to-use booking API and backend that integrates seamlessly into any project. While our Product Hunt launch on February 3rd, 2025, didn&amp;rsquo;t generate massive traffic, we did gain some valuable early signups. This post dives into the initial development process, sharing the challenges and solutions encountered while building ReserveKit&amp;rsquo;s foundation.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-idea-solving-a-common-problem&#34;&gt;The Idea: Solving a Common Problem&lt;/h2&gt;&#xA;&lt;p&gt;The popularity of padel and pickleball has exploded in Malaysia, creating a surge in demand for sports centers. A common thread among these centers is the need for a robust booking system. This need resonated with me, as I&amp;rsquo;d considered building such a system for a friend&amp;rsquo;s sports center five years prior. Although that project didn&amp;rsquo;t materialize, the idea remained.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Encode Google Service Account to Base64</title>
+      <link>http://localhost:1313/til/encode-google-service-account-base64/</link>
+      <pubDate>Wed, 08 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/encode-google-service-account-base64/</guid>
+      <description>&lt;p&gt;Example Google service account JSON:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;service_account&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;project_id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;test_project&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;private_key_id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;abc123&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;private_key&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-----BEGIN PRIVATE KEY-----\nblahblah\n-----END PRIVATE KEY-----\n&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;client_email&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;api@test_project.iam.gserviceaccount.com&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;client_id&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;107309273795607181234&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;auth_uri&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://accounts.google.com/o/oauth2/auth&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;token_uri&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://oauth2.googleapis.com/token&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;auth_provider_x509_cert_url&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.googleapis.com/oauth2/v1/certs&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;client_x509_cert_url&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.googleapis.com/robot/v1/metadata/x509/api%40test_project.iam.gserviceaccount.com&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;universe_domain&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;googleapis.com&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Encode the file to base64. &lt;a href=&#34;https://www.base64encode.org/&#34;&gt;Base64 Encoder&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;Place the base64 string as an environment variable&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-env&#34; data-lang=&#34;env&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;GSA_BASE64&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAidGVzdF9wcm9qZWN0IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiYWJjMTIzIiwKICAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG5ibGFoYmxhaFxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwKICAiY2xpZW50X2VtYWlsIjogImFwaUB0ZXN0X3Byb2plY3QuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJjbGllbnRfaWQiOiAiMTA3MzA5MjczNzk1NjA3MTgxMjM0IiwKICAiYXV0aF91cmkiOiAiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLAogICJ0b2tlbl91cmkiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLAogICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwKICAiY2xpZW50X3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vcm9ib3QvdjEvbWV0YWRhdGEveDUwOS9hcGklNDB0ZXN0X3Byb2plY3QuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLAogICJ1bml2ZXJzZV9kb21haW4iOiAiZ29vZ2xlYXBpcy5jb20iCn0=&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Decode and parse the JSON when asked for credential&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;credentials&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;JSON&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;parse&lt;/span&gt;(&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;Buffer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;from&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;env&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GSA_BASE64&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;base64&amp;#34;&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;toString&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;utf-8&amp;#34;&lt;/span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Google Sheets API setup&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;auth&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;google&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;auth&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GoogleAuth&lt;/span&gt;({&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;credentials&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;scopes&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://www.googleapis.com/auth/spreadsheets&amp;#34;&lt;/span&gt;]&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;})&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    <item>
+      <title>DSA Visualizer</title>
+      <link>http://localhost:1313/projects/dsa-visualizer/</link>
+      <pubDate>Tue, 31 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/dsa-visualizer/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>useMemo &amp; useCallback skips re-render</title>
+      <link>http://localhost:1313/til/usememo-and-usecallback-skips-rerender/</link>
+      <pubDate>Sat, 07 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/usememo-and-usecallback-skips-rerender/</guid>
+      <description>&lt;p&gt;The &lt;code&gt;useMemo&lt;/code&gt; and &lt;code&gt;useCallback&lt;/code&gt; hooks in React help optimize performance by preventing unnecessary re-renders.&#xA;&lt;code&gt;useMemo&lt;/code&gt; memoizes the result of a computation, ensuring the value is only recalculated when its dependencies change.&#xA;&lt;code&gt;useCallback&lt;/code&gt; memoizes a function reference, preventing child components from re-rendering when the function is passed as a prop unless its dependencies change.&#xA;Together, they help minimize redundant rendering, especially in components with heavy computations or deep prop trees.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Creating Persistent Modals in Next.js with Parallel Routes and Route Interception</title>
+      <link>http://localhost:1313/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</link>
+      <pubDate>Thu, 14 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/creating-persistent-modals-in-nextjs-with-parallel-routes-and-route-interception/</guid>
+      <description>&lt;p&gt;In Next.js, creating modals with parallel routes is a well-documented approach, but there&amp;rsquo;s one thing missing from the official docs: how to make the modal persist across page reloads. I faced this challenge recently when I was tasked with rebuilding our settings page as a modal, and I wanted to share the approach I took.&lt;/p&gt;&#xA;&lt;h2 id=&#34;initial-considerations&#34;&gt;Initial Considerations&lt;/h2&gt;&#xA;&lt;p&gt;When rebuilding the settings as a modal, there were a couple of options:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>What happens when rebasing.</title>
+      <link>http://localhost:1313/til/what-happens-when-rebase/</link>
+      <pubDate>Tue, 22 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/til/what-happens-when-rebase/</guid>
+      <description>&lt;p&gt;When rebasing MyBranch onto master, &amp;ldquo;incoming&amp;rdquo; refers to MyBranch (the branch being replayed), and &amp;ldquo;current&amp;rdquo; is master. Rebase resets MyBranch to master, replays its commits, and temporarily considers master as &amp;ldquo;current.&amp;rdquo; After rebasing, MyBranch becomes &amp;ldquo;current&amp;rdquo; again. This differs from merging, where &amp;ldquo;incoming&amp;rdquo; is the branch being merged, and &amp;ldquo;current&amp;rdquo; remains your branch.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>ImagineKraft</title>
+      <link>http://localhost:1313/projects/imaginekraft/</link>
+      <pubDate>Sat, 20 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/imaginekraft/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Import Scanner 🕵️‍♀️</title>
+      <link>http://localhost:1313/projects/import-scanner/</link>
+      <pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/import-scanner/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>How I reduced a search function query’s execution time by 85%</title>
+      <link>http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</link>
+      <pubDate>Thu, 24 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/how-i-reduced-a-search-function-query-s-execution-time-by-85/</guid>
+      <description>&lt;p&gt;Let&amp;rsquo;s make something clear, &lt;em&gt;I am not a database expert&lt;/em&gt;. Though I work with different databases in the past,&#xA;I would most likely use an ORM but I would never see myself doing SQL queries, until recently.&lt;/p&gt;&#xA;&lt;p&gt;So I have been doing alot of SQL queries lately for my Postgres DB on Supabase.&#xA;If you have read my &lt;a href=&#34;https://qwerqy.com/blog/building-a-webapp-for-cafes&#34;&gt;previous blogpost&lt;/a&gt;,&#xA;you know that I use &lt;a href=&#34;https://supabase.com&#34;&gt;Supabase&lt;/a&gt; as the backend for &lt;a href=&#34;https://cafeist.io&#34;&gt;Cafeist&lt;/a&gt;. Supabase&amp;rsquo;s&#xA;Javascript API client is really helpful. It makes it easy to make queries to the API.&#xA;However, once I started to become more ambitious with the features that I implemented,&#xA;I realised there were limitations with the existing Javascript client. With that said, I decided&#xA;to go &lt;em&gt;raw&lt;/em&gt;.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Building a Web App for Cafes</title>
+      <link>http://localhost:1313/blog/building-a-webapp-for-cafes/</link>
+      <pubDate>Sat, 12 Aug 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/building-a-webapp-for-cafes/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This article was enhanced by ChatGPT so pardon the bombastic sentences.&#xA;&lt;/Callout&gt;&#xA;&lt;h2 id=&#34;a-brief-backstory-of-my-café-adventures&#34;&gt;A Brief Backstory of My Café Adventures&lt;/h2&gt;&#xA;&lt;p&gt;Coffee has always been a source of delight for me. Its aromatic allure and the satisfaction of finding the perfect cup with a delightful taste have always enchanted me.&lt;/p&gt;&#xA;&lt;p&gt;Earlier this year, my beloved café, which I frequented often, temporarily closed its doors for renovations. This event prompted my partner and me to embark on a café-hunting expedition within our locality.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Cafeist</title>
+      <link>http://localhost:1313/projects/cafeist/</link>
+      <pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/cafeist/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>5 Tools I Use as a Remote Software Engineer</title>
+      <link>http://localhost:1313/blog/5-tools-i-use-as-a-remote-software-engineer/</link>
+      <pubDate>Thu, 13 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/5-tools-i-use-as-a-remote-software-engineer/</guid>
+      <description>&lt;p&gt;Time is a &lt;strong&gt;bitch&lt;/strong&gt;. It doesn&amp;rsquo;t wait for you, it doesn&amp;rsquo;t care if you are slacking, and it only seems to help when you are heartbroken — as the saying goes, &lt;em&gt;&amp;ldquo;only time can mend a broken heart.&amp;rdquo;&lt;/em&gt; That said, if you are able to control your time, you are able to control everything in your life.&lt;/p&gt;&#xA;&lt;p&gt;As a software engineer who works remotely, I appreciate the flexibility that comes with the job.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Qwerqy/UI</title>
+      <link>http://localhost:1313/projects/qwerqy-ui/</link>
+      <pubDate>Sat, 08 Jul 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/qwerqy-ui/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Supercharging My Coding Routine with Github Copilot and ChatGPT</title>
+      <link>http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</link>
+      <pubDate>Thu, 29 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/supercharging-my-coding-routine-with-github-copilot-and-chatgpt/</guid>
+      <description>&lt;p&gt;Over in &lt;strong&gt;Superside Design System’s team&lt;/strong&gt;, I am responsible to &lt;strong&gt;improve our Storybook documentation&lt;/strong&gt; and &lt;strong&gt;update components&lt;/strong&gt; to keep up with our design updates.&lt;/p&gt;&#xA;&lt;p&gt;Our client-side applications recently been revamped to a new theme, namely &lt;strong&gt;Design System 2.0&lt;/strong&gt; and there has been alot of work need to be done and bugs that need fixing.&lt;/p&gt;&#xA;&lt;p&gt;A few months ago I have been experimenting with AI, mostly trying to use it as a tool. I watched videos on Youtube, read engineering blog posts and checking out tweets by developers.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Streamlining Version Control for Efficient Collaboration</title>
+      <link>http://localhost:1313/blog/streamlining-version-control-for-efficient-collaboration/</link>
+      <pubDate>Thu, 22 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/streamlining-version-control-for-efficient-collaboration/</guid>
+      <description>&lt;p&gt;As a Frontend Engineer at Superside, we have about 60+ members &lt;strong&gt;worldwide&lt;/strong&gt; working on the codebase &lt;strong&gt;day-to-day,&lt;/strong&gt; &lt;strong&gt;around the clock.&lt;/strong&gt; In a fast-paced environment, version control is the backbone of my workflow.&lt;/p&gt;&#xA;&lt;p&gt;Over the past year, I have come to rely on several key Git commands that have greatly improved my efficiency and collaboration with teammates. In this blog post, I will share my most used Git commands and explain &lt;strong&gt;how they have enhanced my development process.&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>YNAB Recap Report Tool</title>
+      <link>http://localhost:1313/projects/yrrt/</link>
+      <pubDate>Sat, 17 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/yrrt/</guid>
+      <description>&lt;p&gt;A tool to generate recap reports based on YNAB transactions csv. The following reports will be generated:&lt;/p&gt;&#xA;&lt;pre&gt;&lt;code&gt;All transactions table&#xA;Total outflow per categories&#xA;Total outflow per flags&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&lt;p&gt;This tool will work perfectly when you set a flag for each of your spending transactions. This tool does not process inflow, only outflow (expenses, spending, etc)&lt;/p&gt;&#xA;&lt;p&gt;Personally I have been using YNAB since 2018. I have always find zero-based budgeting to be awesome and fits my budgeting style. However, I still need a way to&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Exploring Polymorphic Components in React with TypeScript</title>
+      <link>http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/</link>
+      <pubDate>Thu, 15 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/exploring-polymorphic-components-in-react-with-typescript/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Polymorphic components&lt;/strong&gt; are a powerful concept within React that enables &lt;strong&gt;adaptability&lt;/strong&gt; and &lt;strong&gt;flexibility&lt;/strong&gt;. In this blog post, we&amp;rsquo;ll explore polymorphic components and demonstrate their usage with TypeScript.&lt;/p&gt;&#xA;&lt;h2 id=&#34;understanding-polymorphic-components&#34;&gt;Understanding Polymorphic Components&lt;/h2&gt;&#xA;&lt;p&gt;Polymorphism refers to the ability of an object to take on different forms or behaviors based on the context. Think of it as &lt;em&gt;Ditto&lt;/em&gt; from &lt;strong&gt;Pokemon.&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://assets.pokemon.com/assets/cms2/img/pokedex/full/132.png&#34; alt=&#34;Ditto&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;In the context of React:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Polymorphic components in React allow for the creation of &lt;strong&gt;versatile UI&lt;/strong&gt; elements that can &lt;strong&gt;adapt their rendering and behavior&lt;/strong&gt; based on the context.&lt;/li&gt;&#xA;&lt;li&gt;By leveraging polymorphic components, developers can build &lt;strong&gt;reusable&lt;/strong&gt; and &lt;strong&gt;adaptable&lt;/strong&gt; components that suit different use cases.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;TypeScript&amp;rsquo;s&lt;/strong&gt; type system enhances the &lt;strong&gt;correctness&lt;/strong&gt; and &lt;strong&gt;maintainability&lt;/strong&gt; of polymorphic components, providing &lt;strong&gt;strong typing&lt;/strong&gt; and &lt;strong&gt;error detection&lt;/strong&gt;.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;If you are in a scenario of building a components library, having a few components that adapts polymorphism helps&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Blueprint for Building Layouts with Grid System</title>
+      <link>http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/</link>
+      <pubDate>Thu, 08 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/blueprint-for-building-layouts-with-grid-system/</guid>
+      <description>&lt;p&gt;In the world of UI design and development, creating responsive layouts that adapt seamlessly to various screen sizes is &lt;strong&gt;crucial&lt;/strong&gt;. One effective tool for achieving this is a &lt;strong&gt;&lt;a href=&#34;https://www.interaction-design.org/literature/article/the-grid-system-building-a-solid-design-layout&#34;&gt;grid system.&lt;/a&gt;&lt;/strong&gt; In this blog post, we will explore the importance of grid systems, discuss the perspectives of engineers and designers regarding grids, and demonstrate the process of building a React component for a page&amp;rsquo;s layout using a grid system.&lt;/p&gt;&#xA;&lt;h3 id=&#34;grid-system&#34;&gt;Grid System&lt;/h3&gt;&#xA;&lt;p&gt;A grid system in the digital world is akin to a print layout in organizing elements on a page. It serves as a guide for designers, enabling them to create multiple layouts that support responsive themes for different screen sizes. By establishing a consistent grid structure, designers can align and position elements more efficiently, ensuring a visually appealing and harmonious user interface.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Full-blown Frontend Engineer!</title>
+      <link>http://localhost:1313/blog/full-blown-frontend-engineer/</link>
+      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/full-blown-frontend-engineer/</guid>
+      <description>&lt;p&gt;Transitioning to a full-time front-end engineering role can be an exciting and transformative experience. The possibilities for growth and exploration are endless. At the start of 2023, I was assigned to the Design Systems team at Superside, a renowned design and development company. In this blog post, I will share my insights into why choosing one side of the branch can be great, the inner workings of being in a &lt;em&gt;foundational&lt;/em&gt; team, and the contrasting working style compared to &lt;em&gt;product-focused&lt;/em&gt; teams, and the challenges and inspirations encountered along the way.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Flawer Co</title>
+      <link>http://localhost:1313/projects/flawer-co/</link>
+      <pubDate>Thu, 11 Feb 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/flawer-co/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Raffle System</title>
+      <link>http://localhost:1313/projects/raffle-system/</link>
+      <pubDate>Mon, 11 Jan 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/raffle-system/</guid>
+      <description>&lt;p&gt;b&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Kountr</title>
+      <link>http://localhost:1313/projects/kountr/</link>
+      <pubDate>Wed, 06 Jan 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/kountr/</guid>
+      <description>&lt;p&gt;Whether it is a game with your circle of friends, or a company monthly presentation, you can use Kountr to keep count!&lt;/p&gt;&#xA;&lt;p&gt;Kountr is a counter app that is made easy to use for everyone. Even if you are as young as a baby, or old as a cassette, you can use it!&lt;/p&gt;&#xA;&lt;p&gt;In Kountr, you can start as either a Host, or a Participant. As a Host, you set the name of the counter, and then you can start. As simple as that! You can start inviting your friends to join the session by passing them the shareable link that is available on the dashboard once you start the counter. You have the option to reset the counter, or if you want to kill the mood, end it.As a Participant, you will need a session link from a Host, once you have it, you can go into the session. As. Simple. As. THAT!!&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Porter&#39;s Pantry</title>
+      <link>http://localhost:1313/projects/porters-pantry/</link>
+      <pubDate>Fri, 11 Sep 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/porters-pantry/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Discord OpenID Connect Wrapper for Cognito</title>
+      <link>http://localhost:1313/projects/discord-openid-connect-wrapper-for-cognito/</link>
+      <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/discord-openid-connect-wrapper-for-cognito/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Porting my Discord bot project into AWS Ecosystem</title>
+      <link>http://localhost:1313/talks/porting-my-discord-bot-into-aws-ecosystem/</link>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/talks/porting-my-discord-bot-into-aws-ecosystem/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Why You Should Learn To Code?</title>
+      <link>http://localhost:1313/talks/why-you-should-learn-to-code/</link>
+      <pubDate>Thu, 19 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/talks/why-you-should-learn-to-code/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Server to server communication using Socket.io for Battlev</title>
+      <link>http://localhost:1313/blog/server-to-server-communication-using-socket-io-for-battlev/</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/server-to-server-communication-using-socket-io-for-battlev/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Progress Update: Project Battlev is progressing just nicely. Already decided on what type of design I want for the interface, the color scheme. I&amp;rsquo;ve also converted my API server to Typescript for type checking. In this post I will try my best to share how I implemented my idea on how to make my API server and my Discord client server to communicate with each other using Sockets.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;back-to-back-communication&#34;&gt;Back to back communication.&lt;/h2&gt;&#xA;&lt;p&gt;So to bring you guys up to speed, I&amp;rsquo;ve set up the dashboard, and have placed in the ability to change my Clientbot&amp;rsquo;s nickname in one of my guilds in Discord. I do this by doing a PUT request to my API server and within the endpoint, it will update the document based on the body of the request. All good and dandy, sounds like it&amp;rsquo;s done. But not quite&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Authenticating Battlev with Discord OAuth2.0 [Part 2]</title>
+      <link>http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</link>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/authenticating-battlev-with-discord-oauth2-0-part-2/</guid>
+      <description>&lt;p&gt;Hello my fellow readers! I am back with exciting news!&lt;/p&gt;&#xA;&lt;p&gt;I managed to get the OAuth 2.0 &lt;em&gt;thing&lt;/em&gt; working to log in into the dashboard of my project Battlev. It was hard at first to be honest. It was actually the first time I&amp;rsquo;m implementing authentication on a Nodejs-based server.&lt;/p&gt;&#xA;&lt;p&gt;Thanks to the help of &lt;a href=&#34;https://passportjs.org/&#34; title=&#34;Passportjs&#34;&gt;Passport.js&lt;/a&gt;, I don&amp;rsquo;t have to go through the whole process of creating sessions on the server and client. With that being said, do note that the client-side and the server are both running in separate ports. Had trouble with CORS but I solved it. In this post, I will try my best to explain the steps I took to implement this authentication feature.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Refining the Battlev Project</title>
+      <link>http://localhost:1313/blog/refining-the-battlev-project/</link>
+      <pubDate>Sun, 24 Mar 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/refining-the-battlev-project/</guid>
+      <description>&lt;p&gt;Hello again, in this short blog post I will be sharing about my thoughts on one of my side projects, Battlev.&lt;/p&gt;&#xA;&lt;p&gt;(If you guys don&amp;rsquo;t know what Battlev is, check out this post &lt;a href=&#34;https://aminroslan.com/posts/battlev&#34; title=&#34;battlev&#34;&gt;here&lt;/a&gt;.)&lt;/p&gt;&#xA;&lt;p&gt;For the past 1 month, I&amp;rsquo;ve setup a semi-production build of Battlev on Heroku alongside it&amp;rsquo;s landing page. There are two components, the page and the bot itself. For the bot, I&amp;rsquo;ve placed it in 4 servers where all of them are my friends&amp;rsquo;. The bot is mostly used for it&amp;rsquo;s ability to play music in voice channels, and having light chats via the Cleverbot API integration. However, it only lasted until last week as my free dyno for this month has depleted. So I&amp;rsquo;m taking this project a bit further.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Are you a builder or a developer?</title>
+      <link>http://localhost:1313/blog/are-you-a-builder-or-a-developer/</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/are-you-a-builder-or-a-developer/</guid>
+      <description>&lt;p&gt;While I was driving in my neighbourhood, a thought came across my mind. It&amp;rsquo;s one of those philosophical thoughts you get every once a day. This one speaks&lt;/p&gt;&#xA;&lt;p&gt;You are either a builder or a developer. Which one are you?&lt;/p&gt;&#xA;&lt;p&gt;I didn&amp;rsquo;t answer. I let the thought float around my mind. Making sure it doesn&amp;rsquo;t drift apart, I try very hard to think about it until it seeps in.&lt;/p&gt;&#xA;&lt;p&gt;So, today I get the chance to actually talk about this in the blog. What&amp;rsquo;s the difference? Builder or Developer? Build or Develop? On the surface, they both mean the same. Well, not really.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Implementing Server Side Rendering logic to a CRA production app</title>
+      <link>http://localhost:1313/talks/implementing-ssr-to-cra-app/</link>
+      <pubDate>Wed, 27 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/talks/implementing-ssr-to-cra-app/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Implementing SSR to a production React (CRA) product (Part 2: Middleware &amp; State Management)</title>
+      <link>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</link>
+      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-2-middleware-and-state-management/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;Hello guys, welcome back! This is part 2 of the guide series on how to implement SSR to your ongoing production React product.&lt;/p&gt;&#xA;&lt;h2 id=&#34;recap&#34;&gt;Recap&lt;/h2&gt;&#xA;&lt;p&gt;So in part 1 of the guide series, I showed you how I prepared the bootstrap file that will be the entry script to run our project, and by using react-app-rewired how we can override the current CRA configs to enable some Webpack configs to work with SSR.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>How to create a Discord bot in Node.js that fetches images from Imgur</title>
+      <link>http://localhost:1313/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/how-to-create-a-discord-bot-in-node-js-that-fetches-images-from-imgur/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;It&amp;rsquo;s the weekend now and I just got back from a Chinese New Year party. I always thought of building my own Discord bot and have it in my Discord channel where it&amp;rsquo;s convenient for us to request anything from it. I know there are alot more better Discord bots out there, however I just felt having a bot that is built personally by me. It&amp;rsquo;s like having my own child!&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Implementing SSR to a production React (CRA) product (Part 1: Setting up Babel Register &amp; Override CRA script)</title>
+      <link>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/blog/implementing-ssr-to-a-production-react-cra-product-part-1-setting-up-babel-register-and-override-cra-script/</guid>
+      <description>&lt;Callout emoji=&#34;💡&#34;&gt;&#xA;  This page&#39;s structure has been updated on June 2023&#xA;&lt;/Callout&gt;&#xA;&lt;p&gt;There I was, trying to find out what the heck is SSR on google. I get server-side rendering, that&amp;rsquo;s basically what backend frameworks like Laravel and Rails do, but what do you mean with React? &lt;em&gt;Isn&amp;rsquo;t React already good enough?&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;Turns out I was wrong. So I started studying and researching about it. Guides after guides. Finally, I got a bit of a grasp on what it is.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
